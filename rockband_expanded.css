@@ -1,0 +1,476 @@
+@charset "UTF-8";
+
+/* 전역 변수 정의 */
+:root {
+  --bg: #111111;
+  --accent: #E63946;
+  --muted: #457B9D;
+  --text: #F1FAEE;
+  --highlight: #E63946;
+  --card-bg: #DDDDDD;
+}
+
+/* 공통 설정 */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, Roboto, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.4;
+  padding: 24px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: #0f0f0f;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.logo {
+  font-weight: 800;
+  color: var(--accent);
+  font-size: 20px;
+}
+
+.nav {
+  display: flex;
+  gap: 14px;
+  position: relative;
+  align-items: center;
+}
+
+.nav a {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+.nav a:hover {
+  color: var(--highlight);
+}
+
+.country-label {
+  margin-left: 12px;
+  font-size: 14px;
+  color: var(--highlight);
+  font-weight: 700;
+}
+
+.timeline {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 20px;
+  margin-bottom: 18px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+}
+
+.year-btn {
+  background: transparent;
+  border: 2px solid transparent;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--text);
+  transition: all .18s ease;
+}
+.year-btn:hover {
+  transform: translateY(-2px);
+}
+.year-btn.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--highlight);
+}
+
+.bands {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+  margin-top: 12px;
+}
+
+.card {
+  background: var(--card-bg);
+  color: #111;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.993);
+  transition: transform .16s ease;
+}
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 40px rgba(0,0,0,0.28);
+}
+.card .thumb {
+  height: 140px;
+  background: linear-gradient(135deg, var(--muted), var(--accent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 800;
+  font-size: 18px;
+}
+.card .body {
+  padding: 12px;
+}
+.band-name {
+  color: var(--accent);
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+.meta {
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+.track {
+  font-size: 13px;
+}
+.empty {
+  padding: 40px;
+  text-align: center;
+  color: #ccc;
+}
+
+.footer {
+  margin-top: 26px;
+  padding: 16px;
+  background: #121212;
+  border-radius: 8px;
+  color: #aaa;
+  text-align: center;
+}
+
+.country-menu {
+  display: none;
+  position: absolute;
+  top: 40px;
+  left: 100px;
+  background: #222;
+  padding: 8px;
+  border-radius: 6px;
+  z-index: 10;
+}
+.country-menu div {
+  padding: 4px 8px;
+  cursor: pointer;
+  color: var(--text);
+}
+.country-menu div:hover {
+  background: #333;
+}
+
+
+/* === Added for unified Trend page UI (2025-10-23) === */
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+main.main {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.section {
+  margin: 18px 0 28px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid black;
+  border-radius: 12px;
+  padding: 18px;
+}
+
+.section h2, .section h3 {
+  margin: 0 0 12px 0;
+  font-weight: 800;
+  color: var(--highlight);
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.input, input.input {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(0,0,0,0.35);
+  color: var(--text);
+  min-width: 240px;
+  outline: none;
+}
+
+.input:focus {
+  border-color: var(--highlight);
+  box-shadow: 0 0 0 3px rgba(255,215,0,0.12);
+}
+
+.btn, button.btn {
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform .16s ease, box-shadow .16s ease, background .16s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.32);
+}
+
+.badge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #222;
+  color: var(--highlight);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.pills {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.pill {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: var(--text);
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.pill:hover {
+  background: rgba(255,255,255,0.12);
+}
+
+#searchResults .artist-item {
+  background: var(--card-bg);
+  color: #111;
+  border: none;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.22);
+}
+
+.chart-wrap {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+canvas#trendChart {
+  max-width: 900px;
+  width: 100%;
+  height: 360px;
+}
+
+footer.footer .muted {
+  color: #888;
+}
+
+
+/* --- Expand panel (minimal additions) --- */
+.card { position: relative; transition: transform .15s ease; }
+.card.expanded { transform: translateY(-2px); }
+
+.expand { display: none; margin: 10px 12px 12px; }
+.card.expanded .expand { display: block; }
+
+.expand .band-cover {
+  width: 100%; max-height: 220px; object-fit: contain; border-radius: 10px;
+  display: block; margin-bottom: 10px;
+}
+
+.expand .bio {
+  line-height: 1.6;
+  margin: 6px 0 10px;
+  color: var(black); font-size: 14px;
+}
+
+.expand .tracks { display: flex; flex-direction: column; gap: 8px; }
+.expand .track {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 10px; border: 1px solid rgba(0, 0, 0, 0.911); border-radius: 8px;
+  background: rgba(255,255,255,.6);
+}
+.expand .track a { font-weight: 700; color: #111; }
+.expand audio { width: 160px; }
+.card { position: relative; overflow: hidden; }
+.card .body {
+  position: relative;
+  z-index: 2; /* 텍스트를 이미지 위로 */
+}
+
+
+/* 확대 시 이미지를 더 크게/선명하게 */
+.card.expanded .body::before {
+  background-size: 56% auto;
+  opacity: 0.32;
+}
+
+/* === 확대된 카드를 맨 위로 올리고 크게 === */
+.bands { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+
+/* 확대 카드 공통 */
+.card.expanded {
+  grid-column: 1 / -1;         /* 한 줄 전체 사용 */
+  transform: translateY(-6px);
+  box-shadow: 0 20px 48px rgba(0,0,0,0.35);
+}
+
+/* 맨 위에 고정처럼 보이게(실제는 맨 앞으로 이동) */
+.card.expanded.expanded-top {
+  position: relative;
+  z-index: 5;                  /* 위에 떠 보이도록 */
+}
+
+/* 확대 영역 여백/타이포 조금 키우기 */
+.card.expanded .body { padding: 5px; }
+.card.expanded .expand { margin: 10px 12px 12px; }
+.card.expanded .band-cover { max-height: 380px; border-radius: 12px; }
+.card.expanded .bio { font-size: 1.05rem; line-height: 1.78; }
+
+/* 확장 카드 안에서 텍스트 왼쪽, 이미지 오른쪽으로 나란히 배치 */
+.card .expand {
+  padding: 16px 20px 20px;
+}
+
+.card .expand-layout {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+/* 왼쪽: 약력 영역이 남는 공간을 꽉 채우도록 */
+.card .expand-layout .bio {
+  flex: 1;
+  line-height: 1.6;
+}
+
+/* 오른쪽: 사진은 너무 크지 않게, 공백 줄이기 */
+.card .expand-layout .band-cover {
+  width: 500px;       /* 필요하면 260~320px 정도로 조절해도 됨 */
+  max-width: 50vw;    /* 화면이 아주 넓을 때는 폭의 35%까지만 */
+  height: auto;
+  object-fit: contain; /* 사진 잘리지 않게 */
+}
+
+/* 작은 화면(모바일)에서는 다시 세로로 쌓이게 */
+@media (max-width: 768px) {
+  .card .expand-layout {
+    flex-direction: column;
+  }
+  .card .expand-layout .band-cover {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+.era-genre {
+  margin: 20px auto 8px;
+  padding: 6px 16px;
+  display: inline-block;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.15);
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #f5f5f5;
+}
+/* === Favorite 버튼 === */
+.fav-btn {
+  margin: 8px 12px 10px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.25);
+  background: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.fav-btn:hover {
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+}
+.fav-btn.is-fav {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+/* Favorite 페이지용 */
+.favorites-note {
+  font-size: 13px;
+  color: #bbb;
+  margin-top: 6px;
+}
+
+/* Spotify 트랙 리스트 */
+.spotify-tracks {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.spotify-track {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.spotify-track-title {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.spotify-track-meta {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.spotify-track a {
+  font-size: 12px;
+  color: var(--highlight);
+  text-decoration: none;
+  margin-left: 10px;
+}
+.spotify-track a:hover {
+  text-decoration: underline;
+}
+
+

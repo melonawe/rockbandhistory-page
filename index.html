@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Rock Legends - 연도별 락밴드 아카이브 (확장 버전)</title>
+  <!-- 기존 공통 CSS 재사용 -->
+  <link rel="stylesheet" href="rockband_expanded.css" />
+
+  <!-- 카드 본문 뒤쪽 배경 이미지 연결 + 스크롤 부드럽게 -->
+  <style>
+    .card .body::before { background-image: var(--band-bg, none); }
+    html { scroll-behavior: smooth; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">ROCK LEGENDS</div>
+<nav class="nav">
+  <a href="#">Home</a>
+  <a href="#country">Country</a>
+  <a href="#genre">Genre</a>
+  <a href="favorite_bands.html">Favorite Bands</a>
+
+  <span class="country-label" id="countryLabel">Country: All</span>
+  <span class="country-label" id="genreLabel">Genre: All</span>
+
+  <!-- Country 메뉴 -->
+  <div class="country-menu" id="countryMenu">
+    <div>All</div>
+    <div>UK</div>
+    <div>US</div>
+    <div>JP</div>
+    <div>Ita</div>
+  </div>
+
+  <!-- Genre 메뉴 (같은 스타일 재사용) -->
+  <div class="country-menu" id="genreMenu">
+    <div>All</div>
+    <div>Classic Rock</div>
+    <div>Hard Rock</div>
+    <div>Metal</div>
+    <div>Progressive Rock</div>
+    <div>Grunge</div>
+    <div>Britpop</div>
+    <div>J-Rock</div>
+    <div>Alternative Rock</div>
+    <div>Pop Rock</div>
+  </div>
+</nav>
+  </div>
+
+  <main>
+    <section>
+      <h2 style="text-align:center">메인 타임라인 (연도 선택)</h2>
+      <div class="timeline" id="timeline"></div>
+    </section>
+
+    <section>
+      <div id="eraGenre" class="era-genre"></div>
+
+      <h3>대표 밴드</h3>
+      <div id="bands" class="bands">
+        <div class="empty">연도를 선택하세요. (예: 1970, 1990 등)</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    © 1960-2025 Rock Legends · Contact · About · Social
+  </footer>
+
+  <script>
+    const FAVORITES_KEY = 'rocklegends_favorites_v1';
+
+  function getFavorites() {
+    try {
+      const raw = localStorage.getItem(FAVORITES_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveFavorites(list) {
+    localStorage.setItem(FAVORITES_KEY, JSON.stringify(list));
+  }
+
+  function isFavorite(name) {
+    return getFavorites().some(f => f.name === name);
+  }
+
+  function toggleFavorite(band, btn) {
+    let favorites = getFavorites();
+    const idx = favorites.findIndex(f => f.name === band.name);
+    const isFav = idx >= 0;
+
+    if (isFav) {
+      favorites.splice(idx, 1);
+      btn.classList.remove('is-fav');
+      btn.textContent = '☆ Favorite';
+    } else {
+      favorites.push(band);
+      btn.classList.add('is-fav');
+      btn.textContent = '★ Favorite';
+    }
+    saveFavorites(favorites);
+  }
+
+  /* ------------------ 데이터 ------------------ */
+  const DATA = {
+    "1960":[
+      {name:"The Beatles",country:"UK",genre:"Classic Rock",note:"Beatlemania (1960s)", img:"images/beatles.jpg"},
+      {name:"The Rolling Stones",country:"UK",genre:"Classic Rock",note:"Started 1962", img:"images/rollingstones.jpg"},
+      {name:"The Beach Boys",country:"US",genre:"Pop Rock",note:"Surfin’ USA (1963)", img:"images/beachboys.jpg"}
+    ],
+    "1970":[
+      {name:"Led Zeppelin",country:"UK",genre:"Hard Rock",note:"Led Zeppelin IV (1971)", img:"images/ledzeppelin.jpg"},
+      {name:"Pink Floyd",country:"UK",genre:"Progressive Rock",note:"The Wall (1979)", img:"images/pinkfloyd.jpg"},
+      {name:"KISS",country:"US",genre:"Hard Rock",note:"Destroyer (1976)", img:"images/kiss.jpg"}
+    ],
+    "1980":[
+      {name:"X Japan",country:"JP",genre:"Metal",note:"Formation 1982", img:"images/xjapan.jpg"},
+      {name:"U2",country:"Ireland",genre:"Classic Rock",note:"The Joshua Tree (1987)", img:"images/u2.jpg"},
+      {name:"Metallica",country:"US",genre:"Metal",note:"Master of Puppets (1986)", img:"images/metallica.jpg"}
+    ],
+    "1990":[
+      {name:"Nirvana",country:"US",genre:"Grunge",note:"Nevermind (1991)", img:"images/nirvana.jpg"},
+      {name:"Oasis",country:"UK",genre:"Britpop",note:"Morning Glory (1995)", img:"images/oasis.jpg"},
+      {name:"L'Arc~en~Ciel",country:"JP",genre:"J-Rock",note:"Heavenly (1995)", img:"images/larcenciel.jpg"}
+    ],
+    "2000":[
+      {name:"Linkin Park",country:"US",genre:"Alternative Rock",note:"Hybrid Theory (2000)", img:"images/linkinpark.jpg"},
+      {name:"Coldplay",country:"UK",genre:"Pop Rock",note:"Parachutes (2000)", img:"images/coldplay.jpg"},
+      {name:"Asian Kung-Fu Generation",country:"JP",genre:"J-Rock",note:"Debut (2003)", img:"images/akfg.jpg"}
+    ],
+    "2010":[
+      {name:"Imagine Dragons",country:"US",genre:"Pop Rock",note:"Night Visions (2012)", img:"images/imaginedragons.jpg"},
+      {name:"Arctic Monkeys",country:"UK",genre:"Alternative Rock",note:"AM (2013)", img:"images/arcticmonkeys.jpg"}
+    ],
+    "2020":[
+      {name:"Måneskin",country:"Ita",genre:"Hard Rock",note:"Eurovision (2021)", img:"images/maneskin.jpg"},
+      {name:"Greta Van Fleet",country:"US",genre:"Classic Rock",note:"The Battle at Garden's Gate (2021)", img:"images/gvf.jpg"},
+      {name:"King Gnu",country:"JP",genre:"Alternative Rock",note:"Ceremony (2020)", img:"images/kinggnu.jpg"}
+    ]
+  };
+  const years = ["1960","1970","1980","1990","2000","2010","2020"];
+  const ERA_GENRE = {
+  "1960": "1960s · British Invasion & Classic Rock",
+  "1970": "1970s · Hard Rock & Progressive Rock",
+  "1980": "1980s · Metal & Arena Rock",
+  "1990": "1990s · Grunge & Britpop",
+  "2000": "2000s · Alternative & Pop Rock",
+  "2010": "2010s · Indie & Pop Rock",
+  "2020": "2020s · New Wave Rock & Mixed Styles"
+};
+
+  /* ------------------ 약력 ------------------ */
+  const BAND_BIOS = {
+    "The Beatles": "리버풀 출신의 전설적인 록 밴드. 60년대 대중음악의 흐름을 바꿨습니다.",
+    "The Rolling Stones": "블루스 기반 록앤롤의 아이콘. 거친 사운드와 카리스마로 사랑받았습니다.",
+    "Led Zeppelin": "하드 록/헤비메탈의 원형을 제시한 영국 밴드.",
+    "Pink Floyd": "프로그레시브 록의 정점. 실험적 사운드와 개념 앨범으로 유명.",
+    "KISS": "화려한 분장과 퍼포먼스로 유명한 하드 록 밴드.",
+    "Nirvana": "그란지 록의 상징. 90년대 얼터너티브 록 대중화에 결정적 역할.",
+    "Oasis": "브릿팝의 아이콘. 직선적인 멜로디와 태도로 세대를 관통.",
+    "L'Arc~en~Ciel": "일본 록을 대표하는 밴드. 멜로디와 비주얼 모두 강점.",
+    "Linkin Park": "뉴메탈과 일렉트로니카의 결합으로 2000년대 초반을 장악.",
+    "Coldplay": "서정적 멜로디와 감성적 사운드로 사랑받는 영국 밴드.",
+    "Asian Kung-Fu Generation": "에모/얼터너티브 기반 일본 록 밴드.",
+    "Imagine Dragons": "팝 록/일렉트로닉 록의 성공적 결합.",
+    "Arctic Monkeys": "인디/개러지 록 기반의 현대적 사운드를 선도.",
+    "Måneskin": "이탈리아 출신 락밴드로  하드 록, 팝 록, 얼터너티브 록 으로 분류되고 있고'과거 음악의 현대적인 재해석'을 특징으로 하며 레드 제플린, 데이비드 보위, 비틀즈, 롤링 스톤스, 플리트우드 맥, 너바나, 라디오헤드, 악틱 몽키즈, 해리 스타일스 등에게서 가장 큰 음악적 영향을 받았다고 한다.",
+    "Greta Van Fleet": "클래식 록의 계보를 현대적으로 잇는 밴드.",
+    "King Gnu": "장르 경계를 넘나드는 일본 밴드.",
+    "The Beach Boys": "캘리포니아 사운드의 상징. 서프 록/사이키델릭/선샤인 팝 등.",
+    "X Japan": "일본 비주얼계의 선구자. 헤비메탈과 발라드의 조화.",
+    "U2": "아일랜드 출신의 록 밴드로, 사회적 메시지를 담은 음악과 혁신적인 사운드로 세계적인 명성을 얻었습니다.",
+    "Metallica": "미국의 헤비메탈 밴드로, 스래시 메탈 장르를 대표하며 강렬한 사운드와 기술적인 연주로 유명합니다."
+  };
+
+  /* ------------------ 엘리먼트 ------------------ */
+  const timelineEl  = document.getElementById('timeline');
+  const bandsEl     = document.getElementById('bands');
+  const eraGenreEl  = document.getElementById('eraGenre');
+  const countryMenu = document.getElementById('countryMenu');
+  const countryLabel= document.getElementById('countryLabel');
+  const genreMenu   = document.getElementById('genreMenu');
+  const genreLabel  = document.getElementById('genreLabel');
+
+  let selectedCountry = null;
+  let selectedGenre   = null;
+
+  function createYearButton(y){
+    const btn = document.createElement('button');
+    btn.className = 'year-btn';
+    btn.textContent = y;
+    btn.addEventListener('click', () => selectYear(y, btn));
+    return btn;
+  }
+  function updateEraGenre(year) {
+  if (!eraGenreEl) return;
+  const text = ERA_GENRE[year] || (year + "s · Rock");
+  eraGenreEl.textContent = text;
+}
+  function selectYear(year, btn){
+    document.querySelectorAll('.year-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    updateEraGenre(year);
+    renderBandsForYear(year);
+  }
+
+  function renderBandsForYear(year){
+    bandsEl.innerHTML = '';
+    const list = DATA[year];
+    if(!list){
+      bandsEl.innerHTML = '<div class="empty">데이터 없음</div>';
+      return;
+    }
+
+    let filtered = list;
+    if (selectedCountry) {
+      filtered = filtered.filter(b => b.country === selectedCountry);
+    }
+    if (selectedGenre) {
+      filtered = filtered.filter(b => b.genre === selectedGenre);
+    }
+
+    if(filtered.length === 0){
+      bandsEl.innerHTML = '<div class="empty">해당 조건(국가/장르)의 밴드 없음</div>';
+      return;
+    }
+
+    filtered.forEach(b => {
+      const card  = document.createElement('div'); card.className = 'card';
+      const thumb = document.createElement('div'); thumb.className = 'thumb';
+      thumb.textContent = b.name.split(' ')[0];
+
+      const body  = document.createElement('div'); body.className = 'body';
+      if (b.img) body.style.setProperty('--band-bg', `url("${b.img}")`);
+      body.innerHTML = `
+        <div class="band-name">${b.name}</div>
+        <div class="meta">${b.country} · ${year}s · ${b.genre}</div>
+        <div class="track">${b.note || ''}</div>
+      `;
+
+      const expand = document.createElement('div'); 
+expand.className = 'expand';
+expand.innerHTML = `
+  <div class="expand-layout">
+    <div class="bio">
+      ${BAND_BIOS[b.name] || '약력이 아직 없습니다. BAND_BIOS에 "밴드명": "소개글"로 추가하세요.'}
+    </div>
+    ${b.img ? `<img class="band-cover" src="${b.img}" alt="${b.name} cover" />` : ``}
+  </div>
+`;
+
+// === 즐겨찾기 버튼 추가 ===
+      const favBtn = document.createElement('button');
+      favBtn.className = 'fav-btn';
+      if (isFavorite(b.name)) {
+        favBtn.classList.add('is-fav');
+        favBtn.textContent = '★ Favorite';
+      } else {
+        favBtn.textContent = '☆ Favorite';
+      }
+      favBtn.addEventListener('click', (e) => {
+        e.stopPropagation(); // 카드 확대 클릭과 분리
+        toggleFavorite(
+          {
+            name: b.name,
+            country: b.country,
+            genre: b.genre,
+            note: b.note,
+            img: b.img,
+            year: year
+          },
+          favBtn
+        );
+      });
+
+      card.appendChild(thumb);
+      card.appendChild(body);
+      card.appendChild(favBtn);
+      card.appendChild(expand);
+      bandsEl.appendChild(card);
+
+      // 카드 클릭 시: 확대 + 맨 위로
+      card.addEventListener('click', () => {
+        const willOpen = !card.classList.contains('expanded');
+        document.querySelectorAll('#bands .card').forEach(c => c.classList.remove('expanded','expanded-top'));
+        if (willOpen) {
+          bandsEl.prepend(card);
+          card.classList.add('expanded','expanded-top');
+          const header = document.querySelector('.header');
+          const topY = (header ? header.offsetTop + header.offsetHeight + 8 : 0);
+          window.scrollTo({ top: topY, behavior: 'smooth' });
+        }
+      });
+    });
+  }
+
+  // Country 드롭다운
+  document.querySelector('.nav a[href="#country"]').addEventListener('click', (e) => {
+    e.preventDefault();
+    countryMenu.style.display = (countryMenu.style.display === 'block') ? 'none' : 'block';
+    genreMenu.style.display   = 'none';
+  });
+  countryMenu.querySelectorAll('div').forEach(opt => {
+    opt.addEventListener('click', () => {
+      selectedCountry = (opt.textContent === "All") ? null : opt.textContent;
+      countryLabel.textContent = "Country: " + opt.textContent;
+      countryMenu.style.display = 'none';
+      const active = document.querySelector('.year-btn.active');
+      if (active) { renderBandsForYear(active.textContent); }
+    });
+  });
+
+  // Genre 드롭다운
+  document.querySelector('.nav a[href="#genre"]').addEventListener('click', (e) => {
+    e.preventDefault();
+    genreMenu.style.display   = (genreMenu.style.display === 'block') ? 'none' : 'block';
+    countryMenu.style.display = 'none';
+  });
+  genreMenu.querySelectorAll('div').forEach(opt => {
+    opt.addEventListener('click', () => {
+      selectedGenre = (opt.textContent === "All") ? null : opt.textContent;
+      genreLabel.textContent = "Genre: " + opt.textContent;
+      genreMenu.style.display = 'none';
+      const active = document.querySelector('.year-btn.active');
+      if (active) { renderBandsForYear(active.textContent); }
+    });
+  });
+
+  // 타임라인 버튼 생성
+  years.forEach(y => timelineEl.appendChild(createYearButton(y)));
+  </script>
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Rock Legends - Favorite Bands</title>
+  <link rel="stylesheet" href="rockband_expanded.css" />
+</head>
+<body>
+  <div class="header">
+    <div class="logo">ROCK LEGENDS</div>
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="index.html">Country</a>
+      <a href="index.html">Genre</a>
+      <a href="favorite_bands.html" style="text-decoration:underline;">Favorite Bands</a>
+    </nav>
+  </div>
+
+  <main class="main container">
+    <section class="section">
+      <h2>내 Favorite Bands</h2>
+      <p class="favorites-note">
+        메인 타임라인 카드 아래의 ☆ 버튼을 누르면 여기 목록에 저장됩니다.
+      </p>
+      <div id="favoriteBands" class="bands"></div>
+      <div id="noFavorites" class="empty" style="display:none;">
+        아직 즐겨찾기한 밴드가 없습니다.<br>
+        Home 화면에서 별표 버튼을 눌러 즐겨찾기를 추가해보세요.
+      </div>
+    </section>
+
+    <section class="section" id="favoriteDetailSection" style="display:none;">
+      <h2 id="detailBandName">선택한 밴드</h2>
+      <div id="detailInfo" class="card"></div>
+    </section>
+
+    <section class="section" id="spotifySection" style="display:none;">
+      <h2>Spotify Top Tracks</h2>
+      <div id="spotifyTracks" class="spotify-tracks"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    © 1960-2025 Rock Legends · Favorite Bands
+  </footer>
+
+<script>
+  const FAVORITES_KEY = 'rocklegends_favorites_v1';
+
+  // music_trend_unified 페이지와 동일하게 토큰만 바꿔서 쓰면 됨
+  const SPOTIFY_TOKEN = "여기에_본인_액세스_토큰_입력"; // 실제 액세스 토큰으로 교체
+
+  // 메인 페이지와 동일한 약력(필요한 밴드만 사용됨)
+  const BAND_BIOS = {
+    "The Beatles": "리버풀 출신의 전설적인 록 밴드. 60년대 대중음악의 흐름을 바꿨습니다.",
+    "The Rolling Stones": "블루스 기반 록앤롤의 아이콘. 거친 사운드와 카리스마로 사랑받았습니다.",
+    "Led Zeppelin": "하드 록/헤비메탈의 원형을 제시한 영국 밴드.",
+    "Pink Floyd": "프로그레시브 록의 정점. 실험적 사운드와 개념 앨범으로 유명.",
+    "KISS": "화려한 분장과 퍼포먼스로 유명한 하드 록 밴드.",
+    "Nirvana": "그란지 록의 상징. 90년대 얼터너티브 록 대중화에 결정적 역할.",
+    "Oasis": "브릿팝의 아이콘. 직선적인 멜로디와 태도로 세대를 관통.",
+    "L'Arc~en~Ciel": "일본 록을 대표하는 밴드. 멜로디와 비주얼 모두 강점.",
+    "Linkin Park": "뉴메탈과 일렉트로니카의 결합으로 2000년대 초반을 장악.",
+    "Coldplay": "서정적 멜로디와 감성적 사운드로 사랑받는 영국 밴드.",
+    "Asian Kung-Fu Generation": "에모/얼터너티브 기반 일본 록 밴드.",
+    "Imagine Dragons": "팝 록/일렉트로닉 록의 성공적 결합.",
+    "Arctic Monkeys": "인디/개러지 록 기반의 현대적 사운드를 선도.",
+    "Måneskin": "이탈리아 출신 락밴드로  하드 록, 팝 록, 얼터너티브 록 으로 분류되고 있고'과거 음악의 현대적인 재해석'을 특징으로 하며 레드 제플린, 데이비드 보위, 비틀즈, 롤링 스톤스, 플리트우드 맥, 너바나, 라디오헤드, 악틱 몽키즈, 해리 스타일스 등에게서 가장 큰 음악적 영향을 받았다고 한다.",
+    "Greta Van Fleet": "클래식 록의 계보를 현대적으로 잇는 밴드.",
+    "King Gnu": "장르 경계를 넘나드는 일본 밴드."
+  };
+
+    function getFavorites() {
+    try {
+      const raw = localStorage.getItem(FAVORITES_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  const favoriteBandsEl = document.getElementById('favoriteBands');
+  const noFavoritesEl   = document.getElementById('noFavorites');
+  const detailSection   = document.getElementById('favoriteDetailSection');
+  const detailBandName  = document.getElementById('detailBandName');
+  const detailInfoEl    = document.getElementById('detailInfo');
+  const spotifySection  = document.getElementById('spotifySection');
+  const spotifyTracksEl = document.getElementById('spotifyTracks');
+
+  function renderFavoriteList() {
+    const list = getFavorites();
+    favoriteBandsEl.innerHTML = '';
+
+    if (!list.length) {
+      noFavoritesEl.style.display = 'block';
+      detailSection.style.display = 'none';
+      spotifySection.style.display = 'none';
+      return;
+    }
+    noFavoritesEl.style.display = 'none';
+
+    list.forEach(b => {
+      const card = document.createElement('div');
+      card.className = 'card';
+
+      const thumb = document.createElement('div');
+      thumb.className = 'thumb';
+      thumb.textContent = b.name.split(' ')[0];
+
+      const body = document.createElement('div');
+      body.className = 'body';
+      body.innerHTML = `
+        <div class="band-name">${b.name}</div>
+        <div class="meta">${b.country} · ${b.year || ''}s · ${b.genre}</div>
+        <div class="track">${b.note || ''}</div>
+      `;
+
+      card.appendChild(thumb);
+      card.appendChild(body);
+
+      card.addEventListener('click', () => {
+        showFavoriteDetail(b);
+      });
+
+      favoriteBandsEl.appendChild(card);
+    });
+  }
+
+  function showFavoriteDetail(band) {
+    detailSection.style.display = 'block';
+    detailBandName.textContent = band.name;
+
+    // 상세 정보 카드 (메인 확장 레이아웃 느낌 유지)
+    detailInfoEl.innerHTML = `
+      <div class="body">
+        <div class="band-name">${band.name}</div>
+        <div class="meta">${band.country} · ${band.year || ''}s · ${band.genre}</div>
+        <div class="track">${band.note || ''}</div>
+      </div>
+      <div class="expand">
+        <div class="expand-layout">
+          <div class="bio">
+            ${BAND_BIOS[band.name] || '약력이 아직 없습니다.'}
+          </div>
+          ${band.img ? `<img class="band-cover" src="${band.img}" alt="${band.name} cover" />` : ``}
+        </div>
+      </div>
+    `;
+
+    loadSpotifyTracks(band.name);
+  }
+
+  async function loadSpotifyTracks(bandName) {
+    spotifySection.style.display = 'block';
+    spotifyTracksEl.innerHTML = `<span class="badge">Spotify에서 "${bandName}" 검색 중...</span>`;
+
+    if (!SPOTIFY_TOKEN || SPOTIFY_TOKEN.startsWith("여기에_")) {
+      spotifyTracksEl.innerHTML = `
+        <div class="empty">
+          Spotify 토큰이 설정되지 않았습니다.<br>
+          favorite_bands.html의 SPOTIFY_TOKEN 값을 실제 액세스 토큰으로 교체해주세요.
+        </div>`;
+      return;
+    }
+
+    try {
+      // 1) 아티스트 검색
+      const searchRes = await fetch(
+        `https://api.spotify.com/v1/search?q=${encodeURIComponent(bandName)}&type=artist&limit=1`,
+        { headers: { Authorization: "Bearer " + SPOTIFY_TOKEN } }
+      );
+      const searchData = await searchRes.json();
+      const artists = (searchData.artists && searchData.artists.items) || [];
+      if (!artists.length) {
+        spotifyTracksEl.innerHTML = `<div class="empty">"${bandName}" 아티스트를 찾지 못했습니다.</div>`;
+        return;
+      }
+      const artist = artists[0];
+
+      // 2) top tracks 가져오기
+      const topRes = await fetch(
+        `https://api.spotify.com/v1/artists/${artist.id}/top-tracks?market=US`,
+        { headers: { Authorization: "Bearer " + SPOTIFY_TOKEN } }
+      );
+      const topData = await topRes.json();
+      const tracks = topData.tracks || [];
+
+      if (!tracks.length) {
+        spotifyTracksEl.innerHTML = `<div class="empty">Top tracks 데이터가 없습니다.</div>`;
+        return;
+      }
+
+      spotifyTracksEl.innerHTML = '';
+      tracks.slice(0, 5).forEach(t => {
+        const row = document.createElement('div');
+        row.className = 'spotify-track';
+
+        const left = document.createElement('div');
+        left.innerHTML = `
+          <div class="spotify-track-title">${t.name}</div>
+          <div class="spotify-track-meta">${artist.name} · ${t.album && t.album.name ? t.album.name : ''}</div>
+        `;
+
+        const right = document.createElement('div');
+        if (t.preview_url) {
+          const audio = document.createElement('audio');
+          audio.controls = true;
+          audio.src = t.preview_url;
+          right.appendChild(audio);
+        }
+        const link = document.createElement('a');
+        link.href = t.external_urls && t.external_urls.spotify ? t.external_urls.spotify : '#';
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.textContent = "Spotify에서 열기";
+        right.appendChild(link);
+
+        row.appendChild(left);
+        row.appendChild(right);
+        spotifyTracksEl.appendChild(row);
+      });
+
+    } catch (err) {
+      console.error(err);
+      spotifyTracksEl.innerHTML = `
+        <div class="empty">
+          Spotify API 호출에 실패했습니다.<br>
+          토큰 혹은 네트워크 상태를 확인해주세요.
+        </div>`;
+    }
+  }
+
+  // 초기 렌더
+  renderFavoriteList();
+</script>
+</body>
+</html>
