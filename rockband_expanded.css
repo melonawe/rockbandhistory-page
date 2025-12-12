@@ -472,5 +472,26 @@ footer.footer .muted {
 .spotify-track a:hover {
   text-decoration: underline;
 }
+.image-credits {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+
+.image-credits li {
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  font-size: 13px;
+  color: #ccc;
+}
+
+.image-credits a {
+  color: var(--highlight);
+  text-decoration: none;
+}
+
+.image-credits a:hover {
+  text-decoration: underline;
+}
 
 
