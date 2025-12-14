@@ -310,6 +310,36 @@ function rankAndPickPlaylists(allItems, bandName, limit = YT_MAX_RESULTS) {
     .sort((a, b) => b._score - a._score)
     .slice(0, limit);
 }
+async function searchYouTubePlaylists(query, maxResults = YT_MAX_RESULTS) {
+  if (!YT_API_KEY) {
+    throw new Error('YouTube API 키가 설정되지 않았습니다.');
+  }
+
+  const q = encodeURIComponent(query);
+  const url =
+    `https://www.googleapis.com/youtube/v3/search` +
+    `?part=snippet&type=playlist&maxResults=${maxResults}&q=${q}&key=${YT_API_KEY}`;
+
+  const res = await fetch(url);
+  if (!res.ok) {
+    const text = await res.text().catch(() => '');
+    throw new Error(`YouTube API 오류: ${res.status} ${text}`);
+  }
+
+  const data = await res.json();
+
+  return (data.items || [])
+    .map(item => ({
+      playlistId: item?.id?.playlistId,
+      title: item?.snippet?.title || '',
+      channelTitle: item?.snippet?.channelTitle || '',
+      thumbnail:
+        item?.snippet?.thumbnails?.medium?.url ||
+        item?.snippet?.thumbnails?.default?.url ||
+        ''
+    }))
+    .filter(x => x.playlistId);
+}
 
 async function loadYouTubePlaylists(bandName) {
   youtubeSection.style.display = 'block';
