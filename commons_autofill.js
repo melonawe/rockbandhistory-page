@@ -14,13 +14,21 @@
   const CACHE_KEY = 'rocklegends_commons_cache_v1';
   const FAVORITES_KEY = 'rocklegends_favorites_v1';
 
-  function safeJsonParse(str, fallback) {
-    try { return JSON.parse(str); } catch { return fallback; }
+ function safeJsonParse(str, fallback) {
+  // localStorage.getItem()이 null을 줄 수 있음
+  if (str == null || str === '') return fallback;
+  try {
+    const v = JSON.parse(str);
+    return (v == null) ? fallback : v; // "null"도 fallback 처리
+  } catch {
+    return fallback;
   }
+}
 
-  function loadCache() {
-    return safeJsonParse(localStorage.getItem(CACHE_KEY), {});
-  }
+function loadCache() {
+  const c = safeJsonParse(localStorage.getItem(CACHE_KEY), {});
+  return (c && typeof c === 'object') ? c : {};
+}
   function saveCache(cache) {
     try { localStorage.setItem(CACHE_KEY, JSON.stringify(cache)); } catch {}
   }
