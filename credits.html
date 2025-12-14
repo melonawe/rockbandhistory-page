@@ -7,37 +7,33 @@
   <link rel="stylesheet" href="rockband_expanded.css" />
 </head>
 <body>
-
   <div class="header">
     <div class="logo">ROCK LEGENDS</div>
     <nav class="nav">
       <a href="index.html">Home</a>
+      <a href="favorite_bands.html">Favorite Bands</a>
     </nav>
   </div>
 
-  <main class="main container">
+  <main class="container">
     <section class="section">
-      <h2>Image Credits</h2>
+      <h1 style="margin:0 0 10px;">이미지 저작권 / 라이선스 표기</h1>
+      <p class="muted" style="margin:0 0 14px;">
+        이 페이지는 Wikimedia Commons에서 자동으로 가져온 이미지의 작성자/라이선스 정보를 표시합니다.
+        (첫 로딩 시 몇 초 걸릴 수 있어요)
+      </p>
 
-      <ul class="image-credits">
-        <li>
-          <strong>Måneskin (2018)</strong><br>
-          Photo by Paolo Santambrogio ·
-          <a href="https://commons.wikimedia.org/wiki/File:Maneskin_2018.jpg" target="_blank">
-            Wikimedia Commons
-          </a><br>
-          License:
-          <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">
-            CC BY-SA 4.0
-          </a>
-        </li>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin: 0 0 14px;">
+        <button id="refreshBtn" class="btn">다시 불러오기</button>
+        <button id="clearCacheBtn" class="btn" style="background: rgba(255,255,255,0.06);">캐시 삭제</button>
+        <span id="progress" class="muted"></span>
+      </div>
 
-        <!-- 새 이미지 추가 시 여기서 li 하나씩 추가 -->
-      </ul>
+      <div id="creditsRoot"></div>
 
-      <p class="muted">
-        All images are used under Creative Commons licenses.
-        No endorsement is implied.
+      <p class="muted" style="margin-top: 18px;">
+        모든 이미지는 각 파일 페이지에 명시된 자유 라이선스(CC BY, CC BY-SA, Public Domain 등)를 따릅니다.
+        특정 단체/아티스트의 보증(endorsement)을 의미하지 않습니다.
       </p>
     </section>
   </main>
@@ -46,5 +42,86 @@
     © 1960-2025 Rock Legends
   </footer>
 
+  <script src="commons_autofill.js"></script>
+  <script>
+    const FALLBACK_DATA = {
+      "1960": ["Beatles","Rolling Stones","The Who","The Kinks","The Doors","The Jimi Hendrix Experience","Creedence Clearwater Revival","Jefferson Airplane","The Beach Boys","The Spiders"],
+      "1970": ["Led Zeppelin","Pink Floyd","KISS","Queen","Black Sabbath","Deep Purple","Eagles","Van Halen","PFM","Southern All Stars"],
+      "1980": ["X Japan","U2","Metallica","Iron Maiden","Def Leppard","Guns N' Roses","Bon Jovi","The Cure","BOØWY","Litfiba"],
+      "1990": ["Nirvana","Oasis","L'Arc~en~Ciel","Pearl Jam","Green Day","Red Hot Chili Peppers","Blur","Radiohead","GLAY","Afterhours"],
+      "2000": ["Linkin Park","Coldplay","Asian Kung-Fu Generation","The Strokes","The White Stripes","Muse","Arctic Monkeys","The Killers","ONE OK ROCK","Lacuna Coil"],
+      "2010": ["Imagine Dragons","Twenty One Pilots","Royal Blood","The 1975","Bring Me The Horizon","Florence + The Machine","BABYMETAL","MAN WITH A MISSION","BAND-MAID","Thegiornalisti"],
+      "2020": ["Måneskin","Greta Van Fleet","King Gnu","Pinguini Tattici Nucleari","Fast Animals and Slow Kids","Turnstile","Wet Leg","Sleep Token","The Last Dinner Party","Official HIGE DANdism"]
+    };
+
+    const progressEl = document.getElementById('progress');
+    const creditsRoot = document.getElementById('creditsRoot');
+    const refreshBtn = document.getElementById('refreshBtn');
+    const clearCacheBtn = document.getElementById('clearCacheBtn');
+
+    function getDecadeToBands() {
+      try {
+        const raw = localStorage.getItem('rocklegends_data_v1');
+        if (raw) {
+          const data = JSON.parse(raw);
+          const out = {};
+          for (const [dec, list] of Object.entries(data)) {
+            out[dec] = (list || []).map(x => x.name).filter(Boolean);
+          }
+          // 최소한 fallback 키는 유지
+          return Object.keys(out).length ? out : FALLBACK_DATA;
+        }
+      } catch (e) {}
+      return FALLBACK_DATA;
+    }
+
+    function clearUI() {
+      creditsRoot.innerHTML = '';
+      progressEl.textContent = '';
+    }
+
+    async function renderCredits() {
+      clearUI();
+      const decadeToBands = getDecadeToBands();
+      const all = [];
+      for (const [dec, bands] of Object.entries(decadeToBands)) {
+        for (const name of bands) all.push({ name, year: dec });
+      }
+
+      // 섹션 미리 생성
+      const sections = {};
+      for (const dec of Object.keys(decadeToBands)) {
+        const sec = document.createElement('section');
+        sec.className = 'section';
+        sec.style.marginTop = '18px';
+        sec.innerHTML = `<h2 style="margin:0 0 8px;">${dec}년대</h2><ul class="image-credits"></ul>`;
+        creditsRoot.appendChild(sec);
+        sections[dec] = sec.querySelector('ul.image-credits');
+      }
+
+      // 병렬로 메타 가져오기(과도한 요청 방지 위해 동시 4개)
+      const results = await RockLegendsCommons.mapLimit(all, 4, async (it) => {
+        const meta = await RockLegendsCommons.ensureBandImageAndMeta(it.name, it.year);
+        return meta;
+      }, (done, total) => {
+        progressEl.textContent = `불러오는 중... ${done}/${total}`;
+      });
+
+      for (const meta of results) {
+        const ul = sections[String(meta?.year || '')] || sections["1960"];
+        ul.appendChild(RockLegendsCommons.buildCreditLi(meta));
+      }
+
+      progressEl.textContent = '완료!';
+    }
+
+    refreshBtn.addEventListener('click', renderCredits);
+    clearCacheBtn.addEventListener('click', () => {
+      RockLegendsCommons.clearCache();
+      alert('캐시를 삭제했습니다. (다시 불러오기를 누르면 Commons에서 재조회합니다)');
+    });
+
+    renderCredits();
+  </script>
 </body>
 </html>

@@ -63,6 +63,7 @@
   <a href="credits.html">Image Credits</a>
 </footer>
 
+  <script src="commons_autofill.js"></script>
 <script>
   const FAVORITES_KEY = 'rocklegends_favorites_v1';
 
@@ -430,7 +431,22 @@ const BAND_BIOS = {
         showFavoriteDetail(b);
       });
 
-      favoriteBandsEl.appendChild(card);
+      
+      // (추가) 저장된 img가 있으면 카드 배경에 반영
+      if (b.img) body.style.setProperty('--band-bg', `url("${b.img}")`);
+
+      // (추가) Wikimedia Commons에서 빈 img 자동 채우기
+      if (!b.img && window.RockLegendsCommons) {
+        RockLegendsCommons.ensureBandImageAndMeta(b.name, b.year)
+          .then(meta => {
+            if (!meta || !meta.imageUrl) return;
+            b.img = meta.imageUrl;
+            body.style.setProperty('--band-bg', `url("${meta.imageUrl}")`);
+            RockLegendsCommons.patchFavoriteImgIfNeeded(b.name, b.year, meta.imageUrl);
+          })
+          .catch(() => {});
+      }
+favoriteBandsEl.appendChild(card);
     });
   }
 
@@ -450,10 +466,30 @@ const BAND_BIOS = {
           <div class="bio">
             ${BAND_BIOS[band.name] || '약력이 아직 없습니다.'}
           </div>
-          ${band.img ? `<img class="band-cover" src="${band.img}" alt="${band.name} cover" />` : ``}
+          <img class="band-cover" src="${band.img || ""}" alt="${band.name} cover" style="${band.img ? "" : "display:none;"}" />
         </div>
       </div>
     `;
+
+
+    // (추가) 상세 화면에서도 빈 img 자동 채우기
+    if (!band.img && window.RockLegendsCommons) {
+      RockLegendsCommons.ensureBandImageAndMeta(band.name, band.year)
+        .then(meta => {
+          if (!meta || !meta.imageUrl) return;
+          band.img = meta.imageUrl;
+          // 상세 카드 배경/이미지 업데이트
+          const bodyEl = detailInfoEl.querySelector('.body');
+          if (bodyEl) bodyEl.style.setProperty('--band-bg', `url("${meta.imageUrl}")`);
+          const imgEl = detailInfoEl.querySelector('img.band-cover');
+          if (imgEl) {
+            imgEl.src = meta.imageUrl;
+            imgEl.style.display = '';
+          }
+          RockLegendsCommons.patchFavoriteImgIfNeeded(band.name, band.year, meta.imageUrl);
+        })
+        .catch(() => {});
+    }
 
     loadYouTubePlaylists(band.name);
   }
