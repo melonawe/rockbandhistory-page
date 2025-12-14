@@ -110,41 +110,301 @@
 
   /* ------------------ 데이터 ------------------ */
   const DATA = {
-    "1960":[
-      {name:"Beatles",country:"UK",genre:"Classic Rock",note:"Beatlemania (1960s)", img:"images/beatles.jpg"},
-      {name:"Rolling Stones",country:"UK",genre:"Classic Rock",note:"Started 1962", img:"images/rollingstones.jpg"},
-      {name:"Beach Boys",country:"US",genre:"Pop Rock",note:"Surfin’ USA (1963)", img:"images/beachboys.jpg"}
-    ],
-    "1970":[
-      {name:"Led Zeppelin",country:"UK",genre:"Hard Rock",note:"Led Zeppelin IV (1971)", img:"images/ledzeppelin.jpg"},
-      {name:"Pink Floyd",country:"UK",genre:"Progressive Rock",note:"The Wall (1979)", img:"images/pinkfloyd.jpg"},
-      {name:"KISS",country:"US",genre:"Hard Rock",note:"Destroyer (1976)", img:"images/kiss.jpg"}
-    ],
-    "1980":[
-      {name:"X Japan",country:"JP",genre:"Metal",note:"Formation 1982", img:"images/xjapan.jpg"},
-      {name:"U2",country:"Ireland",genre:"Classic Rock",note:"The Joshua Tree (1987)", img:"images/u2.jpg"},
-      {name:"Metallica",country:"US",genre:"Metal",note:"Master of Puppets (1986)", img:"images/metallica.jpg"}
-    ],
-    "1990":[
-      {name:"Nirvana",country:"US",genre:"Grunge",note:"Nevermind (1991)", img:"images/nirvana.jpg"},
-      {name:"Oasis",country:"UK",genre:"Britpop",note:"Morning Glory (1995)", img:"images/oasis.jpg"},
-      {name:"L'Arc~en~Ciel",country:"JP",genre:"J-Rock",note:"Heavenly (1995)", img:"images/larcenciel.jpg"}
-    ],
-    "2000":[
-      {name:"Linkin Park",country:"US",genre:"Alternative Rock",note:"Hybrid Theory (2000)", img:"images/linkinpark.jpg"},
-      {name:"Coldplay",country:"UK",genre:"Pop Rock",note:"Parachutes (2000)", img:"images/coldplay.jpg"},
-      {name:"Asian Kung-Fu Generation",country:"JP",genre:"J-Rock",note:"Debut (2003)", img:"images/akfg.jpg"}
-    ],
-    "2010":[
-      {name:"Imagine Dragons",country:"US",genre:"Pop Rock",note:"Night Visions (2012)", img:"images/imaginedragons.jpg"},
-      {name:"Arctic Monkeys",country:"UK",genre:"Alternative Rock",note:"AM (2013)", img:"images/arcticmonkeys.jpg"}
-    ],
-    "2020":[
-      {name:"Måneskin",country:"Ita",genre:"Hard Rock",note:"Eurovision (2021)", img:"images/maneskin.jpg"},
-      {name:"Greta Van Fleet",country:"US",genre:"Classic Rock",note:"The Battle at Garden's Gate (2021)", img:"images/gvf.jpg"},
-      {name:"King Gnu",country:"JP",genre:"Alternative Rock",note:"Ceremony (2020)", img:"images/kinggnu.jpg"}
-    ]
-  };
+  "1960": [
+    {
+      name:"Beatles", country:"UK", genre:"Classic Rock",
+      note:"British Invasion (1960s)", img:"images/beatles.jpg"
+    },
+    {
+      name:"Rolling Stones", country:"UK", genre:"Classic Rock",
+      note:"Started 1962", img:"images/rollingstones.jpg"
+    },
+    {
+      name:"The Who", country:"UK", genre:"Classic Rock",
+      note:"Tommy (1969)", img:""
+    },
+    {
+      name:"The Kinks", country:"UK", genre:"Classic Rock",
+      note:"You Really Got Me (1964)", img:""
+    },
+    {
+      name:"The Doors", country:"US", genre:"Classic Rock",
+      note:"The Doors (1967)", img:""
+    },
+    {
+      name:"The Jimi Hendrix Experience", country:"US", genre:"Classic Rock",
+      note:"Are You Experienced (1967)", img:""
+    },
+    {
+      name:"Creedence Clearwater Revival", country:"US", genre:"Classic Rock",
+      note:"Bayou Rock (late 1960s)", img:""
+    },
+    {
+      name:"Jefferson Airplane", country:"US", genre:"Classic Rock",
+      note:"Psychedelic Rock era", img:""
+    },
+    {
+      name:"The Beach Boys", country:"US", genre:"Pop Rock",
+      note:"Pet Sounds (1966)", img:"images/beachboys.jpg"
+    },
+    {
+      name:"The Spiders", country:"JP", genre:"J-Rock",
+      note:"Group Sounds (1960s)", img:""
+    }
+  ],
+  "1970": [
+    {
+      name:"Led Zeppelin", country:"UK", genre:"Hard Rock",
+      note:"Led Zeppelin IV (1971)", img:"images/ledzeppelin.jpg"
+    },
+    {
+      name:"Pink Floyd", country:"UK", genre:"Progressive Rock",
+      note:"The Wall (1979)", img:"images/pinkfloyd.jpg"
+    },
+    {
+      name:"KISS", country:"US", genre:"Hard Rock",
+      note:"Destroyer (1976)", img:"images/kiss.jpg"
+    },
+    {
+      name:"Queen", country:"UK", genre:"Classic Rock",
+      note:"A Night at the Opera (1975)", img:""
+    },
+    {
+      name:"Black Sabbath", country:"UK", genre:"Metal",
+      note:"Paranoid (1970)", img:""
+    },
+    {
+      name:"Deep Purple", country:"UK", genre:"Hard Rock",
+      note:"Machine Head (1972)", img:""
+    },
+    {
+      name:"Eagles", country:"US", genre:"Classic Rock",
+      note:"Hotel California (1976)", img:""
+    },
+    {
+      name:"Van Halen", country:"US", genre:"Hard Rock",
+      note:"Van Halen (1978)", img:""
+    },
+    {
+      name:"PFM", country:"Ita", genre:"Progressive Rock",
+      note:"Premiata Forneria Marconi (1970s)", img:""
+    },
+    {
+      name:"Southern All Stars", country:"JP", genre:"Pop Rock",
+      note:"Debut late 1970s", img:""
+    }
+  ],
+  "1980": [
+    {
+      name:"X Japan", country:"JP", genre:"Metal",
+      note:"Formation 1982", img:"images/xjapan.jpg"
+    },
+    {
+      name:"U2", country:"Ireland", genre:"Classic Rock",
+      note:"The Joshua Tree (1987)", img:"images/u2.jpg"
+    },
+    {
+      name:"Metallica", country:"US", genre:"Metal",
+      note:"Master of Puppets (1986)", img:"images/metallica.jpg"
+    },
+    {
+      name:"Iron Maiden", country:"UK", genre:"Metal",
+      note:"NWOBHM (1980s)", img:""
+    },
+    {
+      name:"Def Leppard", country:"UK", genre:"Hard Rock",
+      note:"Hysteria (1987)", img:""
+    },
+    {
+      name:"Guns N' Roses", country:"US", genre:"Hard Rock",
+      note:"Appetite for Destruction (1987)", img:""
+    },
+    {
+      name:"Bon Jovi", country:"US", genre:"Hard Rock",
+      note:"Slippery When Wet (1986)", img:""
+    },
+    {
+      name:"The Cure", country:"UK", genre:"Alternative Rock",
+      note:"Disintegration (1989)", img:""
+    },
+    {
+      name:"BOØWY", country:"JP", genre:"J-Rock",
+      note:"Japanese Rock Boom (1980s)", img:""
+    },
+    {
+      name:"Litfiba", country:"Ita", genre:"Alternative Rock",
+      note:"Italian Rock (1980s)", img:""
+    }
+  ],
+  "1990": [
+    {
+      name:"Nirvana", country:"US", genre:"Grunge",
+      note:"Nevermind (1991)", img:"images/nirvana.jpg"
+    },
+    {
+      name:"Oasis", country:"UK", genre:"Britpop",
+      note:"Morning Glory (1995)", img:"images/oasis.jpg"
+    },
+    {
+      name:"L'Arc~en~Ciel", country:"JP", genre:"J-Rock",
+      note:"Heavenly (1995)", img:"images/larcenciel.jpg"
+    },
+    {
+      name:"Pearl Jam", country:"US", genre:"Grunge",
+      note:"Ten (1991)", img:""
+    },
+    {
+      name:"Green Day", country:"US", genre:"Alternative Rock",
+      note:"Dookie (1994)", img:""
+    },
+    {
+      name:"Red Hot Chili Peppers", country:"US", genre:"Alternative Rock",
+      note:"Californication (1999)", img:""
+    },
+    {
+      name:"Blur", country:"UK", genre:"Britpop",
+      note:"Parklife (1994)", img:""
+    },
+    {
+      name:"Radiohead", country:"UK", genre:"Alternative Rock",
+      note:"OK Computer (1997)", img:""
+    },
+    {
+      name:"GLAY", country:"JP", genre:"J-Rock",
+      note:"J-Rock (1990s)", img:""
+    },
+    {
+      name:"Afterhours", country:"Ita", genre:"Alternative Rock",
+      note:"Italian Alternative Rock", img:""
+    }
+  ],
+  "2000": [
+    {
+      name:"Linkin Park", country:"US", genre:"Alternative Rock",
+      note:"Hybrid Theory (2000)", img:"images/linkinpark.jpg"
+    },
+    {
+      name:"Coldplay", country:"UK", genre:"Pop Rock",
+      note:"Parachutes (2000)", img:"images/coldplay.jpg"
+    },
+    {
+      name:"Asian Kung-Fu Generation", country:"JP", genre:"J-Rock",
+      note:"Debut (2003)", img:"images/akfg.jpg"
+    },
+    {
+      name:"The Strokes", country:"US", genre:"Alternative Rock",
+      note:"Is This It (2001)", img:""
+    },
+    {
+      name:"The White Stripes", country:"US", genre:"Alternative Rock",
+      note:"Elephant (2003)", img:""
+    },
+    {
+      name:"Muse", country:"UK", genre:"Alternative Rock",
+      note:"Absolution (2003)", img:""
+    },
+    {
+      name:"Arctic Monkeys", country:"UK", genre:"Alternative Rock",
+      note:"Breakthrough (mid‑2000s)", img:"images/arcticmonkeys.jpg"
+    },
+    {
+      name:"The Killers", country:"US", genre:"Alternative Rock",
+      note:"Hot Fuss (2004)", img:""
+    },
+    {
+      name:"ONE OK ROCK", country:"JP", genre:"Alternative Rock",
+      note:"Formed 2005", img:""
+    },
+    {
+      name:"Lacuna Coil", country:"Ita", genre:"Metal",
+      note:"Comalies (2002)", img:""
+    }
+  ],
+  "2010": [
+    {
+      name:"Imagine Dragons", country:"US", genre:"Pop Rock",
+      note:"Night Visions (2012)", img:"images/imaginedragons.jpg"
+    },
+    {
+      name:"Twenty One Pilots", country:"US", genre:"Alternative Rock",
+      note:"Blurryface (2015)", img:""
+    },
+    {
+      name:"Royal Blood", country:"UK", genre:"Hard Rock",
+      note:"Debut (2014)", img:""
+    },
+    {
+      name:"The 1975", country:"UK", genre:"Pop Rock",
+      note:"Debut (2013)", img:""
+    },
+    {
+      name:"Bring Me The Horizon", country:"UK", genre:"Metal",
+      note:"Modern Metal / Alt", img:""
+    },
+    {
+      name:"Florence + The Machine", country:"UK", genre:"Alternative Rock",
+      note:"Ceremonials (2011)", img:""
+    },
+    {
+      name:"BABYMETAL", country:"JP", genre:"Metal",
+      note:"Debut (2014)", img:""
+    },
+    {
+      name:"MAN WITH A MISSION", country:"JP", genre:"Alternative Rock",
+      note:"Formed 2010", img:""
+    },
+    {
+      name:"BAND-MAID", country:"JP", genre:"Hard Rock",
+      note:"Formed 2013", img:""
+    },
+    {
+      name:"Thegiornalisti", country:"Ita", genre:"Pop Rock",
+      note:"Italian indie-pop (2010s)", img:""
+    }
+  ],
+  "2020": [
+    {
+      name:"Måneskin", country:"Ita", genre:"Hard Rock",
+      note:"Eurovision (2021)", img:"images/maneskin.jpg"
+    },
+    {
+      name:"Greta Van Fleet", country:"US", genre:"Classic Rock",
+      note:"The Battle at Garden's Gate (2021)", img:"images/gvf.jpg"
+    },
+    {
+      name:"King Gnu", country:"JP", genre:"Alternative Rock",
+      note:"Ceremony (2020)", img:"images/kinggnu.jpg"
+    },
+    {
+      name:"Pinguini Tattici Nucleari", country:"Ita", genre:"Pop Rock",
+      note:"Sanremo 2020 breakthrough", img:""
+    },
+    {
+      name:"Fast Animals and Slow Kids", country:"Ita", genre:"Alternative Rock",
+      note:"Italian Alt Rock (2020s)", img:""
+    },
+    {
+      name:"Turnstile", country:"US", genre:"Alternative Rock",
+      note:"GLOW ON (2021)", img:""
+    },
+    {
+      name:"Wet Leg", country:"UK", genre:"Alternative Rock",
+      note:"Debut album (2022)", img:""
+    },
+    {
+      name:"Sleep Token", country:"UK", genre:"Metal",
+      note:"Take Me Back to Eden (2023)", img:""
+    },
+    {
+      name:"The Last Dinner Party", country:"UK", genre:"Alternative Rock",
+      note:"Breakthrough (2023–)", img:""
+    },
+    {
+      name:"Official HIGE DANdism", country:"JP", genre:"Pop Rock",
+      note:"Pop Rock (2020s)", img:""
+    }
+  ]
+};
   const years = ["1960","1970","1980","1990","2000","2010","2020"];
   const ERA_GENRE = {
   "1960": "1960s · British Invasion & Classic Rock",
@@ -161,101 +421,302 @@ const BAND_BIOS = {
   "Beatles": `
     <p>리버풀 출신의 전설적인 록 밴드로, 1960년대 대중음악의 흐름을 바꿨습니다.</p>
     <p>멜로디와 실험성을 동시에 보여주며 이후 수많은 아티스트에게 영향을 남겼습니다.</p>
+  
   `,
-
   "Rolling Stones": `
     <p>블루스 기반 록앤롤의 아이콘으로, 거친 사운드와 카리스마로 사랑받았습니다.</p>
     <p>장기간 활동하며 라이브 퍼포먼스와 록의 태도를 상징하는 존재가 되었습니다.</p>
+  
   `,
-
-  "Led Zeppelin": `
-    <p>하드 록/헤비메탈의 원형을 제시한 영국 밴드입니다.</p>
-    <p>강력한 리프와 다이내믹한 구성으로 ‘클래식 록’의 대표적인 기준점이 되었습니다.</p>
+  "The Who": `
+    <p><b>The Who</b>은(는) 영국 출신의 Classic Rock 밴드로, 1960년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">Tommy (1969)</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
   `,
-
-  "Pink Floyd": `
-    <p>프로그레시브 록의 정점으로 꼽히는 밴드이며, 실험적 사운드와 개념 앨범으로 유명합니다.</p>
-    <p>사운드 디자인과 서사적 구성으로 ‘앨범 단위 감상’의 매력을 극대화했습니다.</p>
+  "The Kinks": `
+    <p><b>The Kinks</b>은(는) 영국 출신의 Classic Rock 밴드로, 1960년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">You Really Got Me (1964)</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
   `,
-
-  "KISS": `
-    <p>화려한 분장과 퍼포먼스로 유명한 하드 록 밴드입니다.</p>
-    <p>무대 연출과 캐릭터성을 결합해 ‘쇼’로서의 록 공연을 대중적으로 확장했습니다.</p>
+  "The Doors": `
+    <p><b>The Doors</b>은(는) 미국 출신의 Classic Rock 밴드로, 1960년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">The Doors (1967)</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
   `,
-
-  "Nirvana": `
-    <p>그란지 록의 상징으로, 1990년대 얼터너티브 록 대중화에 결정적 역할을 했습니다.</p>
-    <p>거칠지만 직설적인 감정 표현으로 당시 세대의 정서를 대표하는 밴드가 되었습니다.</p>
+  "The Jimi Hendrix Experience": `
+    <p><b>The Jimi Hendrix Experience</b>은(는) 미국 출신의 Classic Rock 밴드로, 1960년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">Are You Experienced (1967)</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
   `,
-
-  "Oasis": `
-    <p>브릿팝의 아이콘으로, 직선적인 멜로디와 태도로 세대를 관통했습니다.</p>
-    <p>큰 후렴과 강한 ‘싱얼롱’ 감성으로 1990년대 영국 록의 중심에 섰습니다.</p>
+  "Creedence Clearwater Revival": `
+    <p><b>Creedence Clearwater Revival</b>은(는) 미국 출신의 Classic Rock 밴드로, 1960년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">Bayou Rock (late 1960s)</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
   `,
-
-  "L'Arc~en~Ciel": `
-    <p>일본 록을 대표하는 밴드로, 멜로디와 비주얼 모두 강점으로 평가받습니다.</p>
-    <p>다채로운 사운드 스펙트럼과 세련된 곡 전개로 폭넓은 팬층을 형성했습니다.</p>
+  "Jefferson Airplane": `
+    <p><b>Jefferson Airplane</b>은(는) 미국 출신의 Classic Rock 밴드로, 1960년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">Psychedelic Rock era</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
   `,
-
-  "Linkin Park": `
-    <p>뉴메탈과 일렉트로니카의 결합으로 2000년대 초반을 장악한 밴드입니다.</p>
-    <p>강한 에너지와 감정선이 뚜렷한 보컬 스타일로 대중성과 공격성을 동시에 잡았습니다.</p>
-  `,
-
-  "Coldplay": `
-    <p>서정적 멜로디와 감성적 사운드로 사랑받는 영국 밴드입니다.</p>
-    <p>부드러운 분위기부터 웅장한 스케일까지 확장하며 ‘모던 팝 록’의 대표 주자가 되었습니다.</p>
-  `,
-
-  "Asian Kung-Fu Generation": `
-    <p>에모/얼터너티브 기반의 일본 록 밴드입니다.</p>
-    <p>선명한 기타 사운드와 직관적인 곡 구성으로 많은 리스너에게 꾸준히 사랑받고 있습니다.</p>
-  `,
-
-  "Imagine Dragons": `
-    <p>팝 록/일렉트로닉 록을 성공적으로 결합한 밴드입니다.</p>
-    <p>강한 비트와 후렴 중심의 구성이 특징이며, 대중적인 에너지로 큰 호응을 얻었습니다.</p>
-  `,
-
-  "Arctic Monkeys": `
-    <p>인디/개러지 록 기반의 현대적 사운드를 선도한 밴드입니다.</p>
-    <p>시기별로 스타일을 유연하게 확장하면서도 특유의 감각적인 분위기를 유지했습니다.</p>
-  `,
-
-  "Måneskin": `
-    <p>Måneskin은 이탈리아 출신 록 밴드로, 하드 록과 팝 록, 얼터너티브 록을 기반으로 활동하고 있습니다.</p>
-    <p>과거 록 음악을 현대적으로 재해석하는 스타일을 특징으로 하며, 다양한 아티스트에게서 영향을 받은 것으로 알려져 있습니다.</p>
-  `,
-
-  "Greta Van Fleet": `
-    <p>클래식 록의 계보를 현대적으로 잇는 밴드입니다.</p>
-    <p>빈티지한 질감의 사운드와 강한 밴드 연주를 중심으로 존재감을 보여줍니다.</p>
-  `,
-
-  "King Gnu": `
-    <p>장르 경계를 넘나드는 일본 밴드입니다.</p>
-    <p>록을 기반으로 하면서도 다양한 편곡과 질감으로 독자적인 색을 만들어갑니다.</p>
-  `,
-
   "The Beach Boys": `
     <p>캘리포니아 사운드의 상징으로, 서프 록/선샤인 팝 계열의 이미지로 널리 알려져 있습니다.</p>
     <p>밝은 하모니와 세련된 편곡으로 ‘팝 보컬 그룹’의 기준을 확장했습니다.</p>
+  
   `,
-
+  "The Spiders": `
+    <p><b>The Spiders</b>은(는) 일본 출신의 J-Rock 밴드로, 1960년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">Group Sounds (1960s)</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
+  `,
+  "Led Zeppelin": `
+    <p>하드 록/헤비메탈의 원형을 제시한 영국 밴드입니다.</p>
+    <p>강력한 리프와 다이내믹한 구성으로 ‘클래식 록’의 대표적인 기준점이 되었습니다.</p>
+  
+  `,
+  "Pink Floyd": `
+    <p>프로그레시브 록의 정점으로 꼽히는 밴드이며, 실험적 사운드와 개념 앨범으로 유명합니다.</p>
+    <p>사운드 디자인과 서사적 구성으로 ‘앨범 단위 감상’의 매력을 극대화했습니다.</p>
+  
+  `,
+  "KISS": `
+    <p>화려한 분장과 퍼포먼스로 유명한 하드 록 밴드입니다.</p>
+    <p>무대 연출과 캐릭터성을 결합해 ‘쇼’로서의 록 공연을 대중적으로 확장했습니다.</p>
+  
+  `,
+  "Queen": `
+    <p><b>Queen</b>은(는) 영국 출신의 Classic Rock 밴드로, 1970년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">A Night at the Opera (1975)</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
+  `,
+  "Black Sabbath": `
+    <p><b>Black Sabbath</b>은(는) 영국 출신의 Metal 밴드로, 1970년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">Paranoid (1970)</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
+  `,
+  "Deep Purple": `
+    <p><b>Deep Purple</b>은(는) 영국 출신의 Hard Rock 밴드로, 1970년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">Machine Head (1972)</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
+  `,
+  "Eagles": `
+    <p><b>Eagles</b>은(는) 미국 출신의 Classic Rock 밴드로, 1970년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">Hotel California (1976)</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
+  `,
+  "Van Halen": `
+    <p><b>Van Halen</b>은(는) 미국 출신의 Hard Rock 밴드로, 1970년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">Van Halen (1978)</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
+  `,
+  "PFM": `
+    <p><b>PFM</b>(Premiata Forneria Marconi)은 이탈리아를 대표하는 프로그레시브 록 밴드로, 1970년대 ‘이탈리아 프로그’ 흐름을 세계적으로 알린 팀 중 하나로 평가받습니다.</p>
+    <p>클래식/재즈 감성의 연주와 서정적인 멜로디가 공존하며, 장르 팬이라면 한 번쯤 꼭 거쳐 가는 이름입니다.</p>
+  `,
+  "Southern All Stars": `
+    <p><b>Southern All Stars</b>은(는) 일본 출신의 Pop Rock 밴드로, 1970년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">Debut late 1970s</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
+  `,
   "X Japan": `
     <p>일본 비주얼계의 선구자로, 헤비메탈과 발라드의 극적인 대비로 유명합니다.</p>
     <p>강렬한 무대성과 감성적인 멜로디를 함께 보여주며 큰 영향력을 남겼습니다.</p>
+  
   `,
-
   "U2": `
     <p>아일랜드 출신의 록 밴드로, 사회적 메시지를 담은 음악과 혁신적인 사운드로 세계적인 명성을 얻었습니다.</p>
     <p>공연 규모와 사운드 연출 면에서도 ‘스타디움 록’의 대표 주자로 자주 언급됩니다.</p>
+  
   `,
-
   "Metallica": `
     <p>미국의 헤비메탈 밴드로, 스래시 메탈 장르를 대표하는 이름 중 하나입니다.</p>
     <p>강렬한 사운드와 탄탄한 연주로 메탈의 대중적 확장에도 큰 역할을 했습니다.</p>
+  
+  `,
+  "Iron Maiden": `
+    <p><b>Iron Maiden</b>은(는) 영국 출신의 Metal 밴드로, 1980년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">NWOBHM (1980s)</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
+  `,
+  "Def Leppard": `
+    <p><b>Def Leppard</b>은(는) 영국 출신의 Hard Rock 밴드로, 1980년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">Hysteria (1987)</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
+  `,
+  "Guns N' Roses": `
+    <p><b>Guns N' Roses</b>은(는) 미국 출신의 Hard Rock 밴드로, 1980년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">Appetite for Destruction (1987)</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
+  `,
+  "Bon Jovi": `
+    <p><b>Bon Jovi</b>은(는) 미국 출신의 Hard Rock 밴드로, 1980년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">Slippery When Wet (1986)</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
+  `,
+  "The Cure": `
+    <p><b>The Cure</b>은(는) 영국 출신의 Alternative Rock 밴드로, 1980년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">Disintegration (1989)</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
+  `,
+  "BOØWY": `
+    <p><b>BOØWY</b>은(는) 일본 출신의 J-Rock 밴드로, 1980년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">Japanese Rock Boom (1980s)</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
+  `,
+  "Litfiba": `
+    <p><b>Litfiba</b>은(는) 이탈리아 출신의 Alternative Rock 밴드로, 1980년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">Italian Rock (1980s)</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
+  `,
+  "Nirvana": `
+    <p>그란지 록의 상징으로, 1990년대 얼터너티브 록 대중화에 결정적 역할을 했습니다.</p>
+    <p>거칠지만 직설적인 감정 표현으로 당시 세대의 정서를 대표하는 밴드가 되었습니다.</p>
+  
+  `,
+  "Oasis": `
+    <p>브릿팝의 아이콘으로, 직선적인 멜로디와 태도로 세대를 관통했습니다.</p>
+    <p>큰 후렴과 강한 ‘싱얼롱’ 감성으로 1990년대 영국 록의 중심에 섰습니다.</p>
+  
+  `,
+  "L'Arc~en~Ciel": `
+    <p>일본 록을 대표하는 밴드로, 멜로디와 비주얼 모두 강점으로 평가받습니다.</p>
+    <p>다채로운 사운드 스펙트럼과 세련된 곡 전개로 폭넓은 팬층을 형성했습니다.</p>
+  
+  `,
+  "Pearl Jam": `
+    <p><b>Pearl Jam</b>은(는) 미국 출신의 Grunge 밴드로, 1990년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">Ten (1991)</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
+  `,
+  "Green Day": `
+    <p><b>Green Day</b>은(는) 미국 출신의 Alternative Rock 밴드로, 1990년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">Dookie (1994)</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
+  `,
+  "Red Hot Chili Peppers": `
+    <p><b>Red Hot Chili Peppers</b>은(는) 미국 출신의 Alternative Rock 밴드로, 1990년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">Californication (1999)</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
+  `,
+  "Blur": `
+    <p><b>Blur</b>은(는) 영국 출신의 Britpop 밴드로, 1990년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">Parklife (1994)</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
+  `,
+  "Radiohead": `
+    <p><b>Radiohead</b>은(는) 영국 출신의 Alternative Rock 밴드로, 1990년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">OK Computer (1997)</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
+  `,
+  "GLAY": `
+    <p><b>GLAY</b>은(는) 일본 출신의 J-Rock 밴드로, 1990년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">J-Rock (1990s)</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
+  `,
+  "Afterhours": `
+    <p><b>Afterhours</b>은(는) 이탈리아 출신의 Alternative Rock 밴드로, 1990년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">Italian Alternative Rock</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
+  `,
+  "Linkin Park": `
+    <p>뉴메탈과 일렉트로니카의 결합으로 2000년대 초반을 장악한 밴드입니다.</p>
+    <p>강한 에너지와 감정선이 뚜렷한 보컬 스타일로 대중성과 공격성을 동시에 잡았습니다.</p>
+  
+  `,
+  "Coldplay": `
+    <p>서정적 멜로디와 감성적 사운드로 사랑받는 영국 밴드입니다.</p>
+    <p>부드러운 분위기부터 웅장한 스케일까지 확장하며 ‘모던 팝 록’의 대표 주자가 되었습니다.</p>
+  
+  `,
+  "Asian Kung-Fu Generation": `
+    <p>에모/얼터너티브 기반의 일본 록 밴드입니다.</p>
+    <p>선명한 기타 사운드와 직관적인 곡 구성으로 많은 리스너에게 꾸준히 사랑받고 있습니다.</p>
+  
+  `,
+  "The Strokes": `
+    <p><b>The Strokes</b>은(는) 미국 출신의 Alternative Rock 밴드로, 2000년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">Is This It (2001)</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
+  `,
+  "The White Stripes": `
+    <p><b>The White Stripes</b>은(는) 미국 출신의 Alternative Rock 밴드로, 2000년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">Elephant (2003)</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
+  `,
+  "Muse": `
+    <p><b>Muse</b>은(는) 영국 출신의 Alternative Rock 밴드로, 2000년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">Absolution (2003)</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
+  `,
+  "Arctic Monkeys": `
+    <p>인디/개러지 록 기반의 현대적 사운드를 선도한 밴드입니다.</p>
+    <p>시기별로 스타일을 유연하게 확장하면서도 특유의 감각적인 분위기를 유지했습니다.</p>
+  
+  `,
+  "The Killers": `
+    <p><b>The Killers</b>은(는) 미국 출신의 Alternative Rock 밴드로, 2000년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">Hot Fuss (2004)</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
+  `,
+  "ONE OK ROCK": `
+    <p><b>ONE OK ROCK</b>은(는) 일본 출신의 Alternative Rock 밴드로, 2000년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">Formed 2005</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
+  `,
+  "Lacuna Coil": `
+    <p><b>Lacuna Coil</b>은(는) 이탈리아 출신의 Metal 밴드로, 2000년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">Comalies (2002)</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
+  `,
+  "Imagine Dragons": `
+    <p>팝 록/일렉트로닉 록을 성공적으로 결합한 밴드입니다.</p>
+    <p>강한 비트와 후렴 중심의 구성이 특징이며, 대중적인 에너지로 큰 호응을 얻었습니다.</p>
+  
+  `,
+  "Twenty One Pilots": `
+    <p><b>Twenty One Pilots</b>은(는) 미국 출신의 Alternative Rock 밴드로, 2010년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">Blurryface (2015)</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
+  `,
+  "Royal Blood": `
+    <p><b>Royal Blood</b>은(는) 영국 출신의 Hard Rock 밴드로, 2010년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">Debut (2014)</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
+  `,
+  "The 1975": `
+    <p><b>The 1975</b>은(는) 영국 출신의 Pop Rock 밴드로, 2010년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">Debut (2013)</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
+  `,
+  "Bring Me The Horizon": `
+    <p><b>Bring Me The Horizon</b>은(는) 영국 출신의 Metal 밴드로, 2010년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">Modern Metal / Alt</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
+  `,
+  "Florence + The Machine": `
+    <p><b>Florence + The Machine</b>은(는) 영국 출신의 Alternative Rock 밴드로, 2010년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">Ceremonials (2011)</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
+  `,
+  "BABYMETAL": `
+    <p><b>BABYMETAL</b>은 일본에서 시작된 ‘카와이 메탈(kawaii metal)’ 스타일의 대표 주자로, J‑pop의 멜로디/퍼포먼스와 메탈 사운드를 과감하게 섞어낸 팀입니다.</p>
+    <p>아이돌식 안무와 헤비한 기타 리프가 공존하는 독특한 무대가 특징이며, 해외에서도 큰 화제가 되며 월드투어를 이어 왔습니다.</p>
+  `,
+  "MAN WITH A MISSION": `
+    <p><b>MAN WITH A MISSION</b>은 일본의 록 밴드로, 멤버들이 늑대 마스크를 쓰고 무대에 오르는 독특한 콘셉트로 잘 알려져 있습니다.</p>
+    <p>록을 기반으로 랩/댄스/일렉트로닉 요소를 섞는 편이라 에너지 넘치는 곡들이 많고, 애니·게임 OST로도 자주 등장합니다.</p>
+  `,
+  "BAND-MAID": `
+    <p><b>BAND-MAID</b>는 일본의 하드록 밴드로, 메이드 콘셉트의 의상과 강력한 밴드 사운드를 결합한 퍼포먼스로 유명합니다.</p>
+    <p>곡은 빠른 리프와 훅 중심의 전개가 많아 “보기 전엔 모르는” 반전 매력이 강하고, 라이브 에너지로도 높은 평가를 받습니다.</p>
+  `,
+  "Thegiornalisti": `
+    <p><b>Thegiornalisti</b>은(는) 이탈리아 출신의 Pop Rock 밴드로, 2010년대(및 그 전후) 록 신에서 큰 존재감을 남긴 팀입니다.</p>
+    <p>입문 포인트로는 <span class="muted">Italian indie-pop (2010s)</span> 같은 대표작/시기들이 자주 언급되며, 시대를 대표하는 사운드와 무대 퍼포먼스로 많은 팬층을 보유하고 있습니다.</p>
+  `,
+  "Måneskin": `
+    <p>Måneskin은 이탈리아 출신 록 밴드로, 하드 록과 팝 록, 얼터너티브 록을 기반으로 활동하고 있습니다.</p>
+    <p>과거 록 음악을 현대적으로 재해석하는 스타일을 특징으로 하며, 다양한 아티스트에게서 영향을 받은 것으로 알려져 있습니다.</p>
+  
+  `,
+  "Greta Van Fleet": `
+    <p>클래식 록의 계보를 현대적으로 잇는 밴드입니다.</p>
+    <p>빈티지한 질감의 사운드와 강한 밴드 연주를 중심으로 존재감을 보여줍니다.</p>
+  
+  `,
+  "King Gnu": `
+    <p>장르 경계를 넘나드는 일본 밴드입니다.</p>
+    <p>록을 기반으로 하면서도 다양한 편곡과 질감으로 독자적인 색을 만들어갑니다.</p>
+  
+  `,
+  "Pinguini Tattici Nucleari": `
+    <p><b>Pinguini Tattici Nucleari</b>는 이탈리아 베르가모에서 결성된 인디 록/팝 밴드로, 재치 있는 가사와 대중적인 멜로디로 많은 사랑을 받습니다.</p>
+    <p>록 밴드 편성에 팝 감성을 얹은 곡들이 많아 듣기 편하면서도 라이브에서 힘이 살아나는 편이고, 2020년대 이탈리아 대중음악 씬에서 존재감이 커졌습니다.</p>
+  `,
+  "Fast Animals and Slow Kids": `
+    <p><b>Fast Animals and Slow Kids</b>(FASK)는 이탈리아 페루자 출신의 록 밴드로, 거칠면서도 감정선이 진한 얼터너티브 사운드를 들려줍니다.</p>
+    <p>서정적인 멜로디와 힘 있는 밴드 연주가 함께 가는 스타일이라 ‘감성+에너지’ 둘 다 챙긴 록을 좋아한다면 잘 맞습니다.</p>
+  `,
+  "Turnstile": `
+    <p><b>Turnstile</b>은 미국 출신의 하드코어/얼터너티브 성향 밴드로, 펑크 에너지에 팝적인 훅과 그루브를 섞어 독자적인 색을 만들었습니다.</p>
+    <p>거친 기타와 탄탄한 리듬이 중심이지만 멜로디 감각도 강해 ‘하드코어 입문용’으로도 추천되며, 2020년대에 큰 주목을 받았습니다.</p>
+  `,
+  "Wet Leg": `
+    <p><b>Wet Leg</b>는 영국(아일 오브 와이트) 출신의 인디 록 밴드로, 장난기 있는 가사와 간결한 기타 리프로 빠르게 주목받았습니다.</p>
+    <p>경쾌한 리듬과 드라이한 보컬 톤이 매력 포인트이며, 2020년대 초반 ‘신흥 인디 록’ 흐름을 대표하는 팀 중 하나로 자주 거론됩니다.</p>
+  `,
+  "Sleep Token": `
+    <p><b>Sleep Token</b>은 영국에서 결성된 익명(마스크) 콘셉트의 록/메탈 밴드로, 몽환적인 분위기와 강렬한 폭발감을 오가는 전개가 특징입니다.</p>
+    <p>메탈 기반이지만 팝·R&amp;B·일렉트로닉 등 다양한 요소를 섞어 ‘장르 경계가 흐릿한’ 사운드를 만들며, 2020년대에 급격히 대중적 인지도를 넓혔습니다.</p>
+  `,
+  "The Last Dinner Party": `
+    <p><b>The Last Dinner Party</b>는 영국 런던에서 결성된 얼터너티브 록 밴드로, 드라마틱한 편곡과 극적인 무대 감각으로 급부상했습니다.</p>
+    <p>아트 록/바로크 팝 감성이 섞인 화려한 사운드가 특징이며, 데뷔 이후 빠르게 큰 규모의 무대에 오르며 2020년대 영국 신세대 록 흐름을 대표하는 이름으로 언급됩니다.</p>
+  `,
+  "Official HIGE DANdism": `
+    <p><b>Official HIGE DANdism</b>은 일본의 팝 록 밴드로, 부드러운 코드 진행과 세련된 편곡, 감각적인 멜로디로 폭넓은 대중성을 확보했습니다.</p>
+    <p>록을 기반으로 R&amp;B/재즈/팝 느낌을 자연스럽게 섞는 편이라 플레이리스트에 넣기 좋고, 2020년대에도 꾸준히 히트곡을 내며 인기를 이어가고 있습니다.</p>
   `
 };
 
