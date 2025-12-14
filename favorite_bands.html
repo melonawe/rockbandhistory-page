@@ -5,6 +5,20 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Rock Legends - Favorite Bands</title>
   <link rel="stylesheet" href="rockband_expanded.css" />
+
+<style>
+  .youtube-playlists { display: grid; gap: 14px; }
+  .yt-card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; overflow: hidden; }
+  .yt-meta { display:flex; gap: 12px; padding: 12px; align-items: center; }
+  .yt-thumb { width: 96px; height: 54px; object-fit: cover; border-radius: 8px; flex: 0 0 auto; }
+  .yt-text { min-width: 0; }
+  .yt-title { font-weight: 700; line-height: 1.25; }
+  .yt-channel { opacity: 0.85; font-size: 0.9em; margin-top: 4px; }
+  .yt-player iframe { width: 100%; aspect-ratio: 16 / 9; display:block; }
+  .loading, .error, .empty { padding: 12px; opacity: 0.9; }
+  .error { border-top: 1px solid rgba(255,80,80,0.35); }
+</style>
+
 </head>
 <body>
   <div class="header">
@@ -35,10 +49,13 @@
       <div id="detailInfo" class="card"></div>
     </section>
 
-    <section class="section" id="spotifySection" style="display:none;">
-      <h2>Spotify Top Tracks</h2>
-      <div id="spotifyTracks" class="spotify-tracks"></div>
-    </section>
+    <section class="section" id="youtubeSection" style="display:none;">
+  <h2>YouTube 플레이리스트 추천</h2>
+  <p class="hint" style="margin-top:-6px; opacity:0.85;">
+    YouTube Data API로 밴드 관련 플레이리스트를 검색해 보여줍니다.
+  </p>
+  <div id="youtubePlaylists" class="youtube-playlists"></div>
+</section>
   </main>
 
   <footer class="footer">
@@ -49,8 +66,13 @@
 <script>
   const FAVORITES_KEY = 'rocklegends_favorites_v1';
 
-  // music_trend_unified 페이지와 동일하게 토큰만 바꿔서 쓰면 됨
-  const SPOTIFY_TOKEN = "여기에_본인_액세스_토큰_입력"; // 실제 액세스 토큰으로 교체
+
+// ------------------ YouTube Data API 설정 ------------------
+// 1) Google Cloud Console에서 YouTube Data API v3를 활성화
+// 2) API 키를 발급한 뒤 아래에 붙여넣기
+// ⚠️ 프론트에 키를 넣으면 노출됩니다. (도메인 제한/쿼터 설정 권장)
+const YT_API_KEY = 'YOUR_YOUTUBE_DATA_API_KEY_HERE';
+const YT_MAX_RESULTS = 3;
 
   // 메인 페이지와 동일한 약력(필요한 밴드만 사용됨)
 const BAND_BIOS = {
@@ -169,8 +191,8 @@ const BAND_BIOS = {
   const detailSection   = document.getElementById('favoriteDetailSection');
   const detailBandName  = document.getElementById('detailBandName');
   const detailInfoEl    = document.getElementById('detailInfo');
-  const spotifySection  = document.getElementById('spotifySection');
-  const spotifyTracksEl = document.getElementById('spotifyTracks');
+    const youtubeSection = document.getElementById('youtubeSection');
+  const youtubePlaylistsEl = document.getElementById('youtubePlaylists');
 
   function renderFavoriteList() {
     const list = getFavorites();
@@ -179,7 +201,7 @@ const BAND_BIOS = {
     if (!list.length) {
       noFavoritesEl.style.display = 'block';
       detailSection.style.display = 'none';
-      spotifySection.style.display = 'none';
+      youtubeSection.style.display = 'none';
       return;
     }
     noFavoritesEl.style.display = 'none';
@@ -232,88 +254,97 @@ const BAND_BIOS = {
       </div>
     `;
 
-    loadSpotifyTracks(band.name);
+    loadYouTubePlaylists(band.name);
   }
 
-  async function loadSpotifyTracks(bandName) {
-    spotifySection.style.display = 'block';
-    spotifyTracksEl.innerHTML = `<span class="badge">Spotify에서 "${bandName}" 검색 중...</span>`;
+// ------------------ YouTube 플레이리스트 추천 ------------------
+async function searchYouTubePlaylists(query, maxResults = YT_MAX_RESULTS) {
+  if (!YT_API_KEY || YT_API_KEY === 'YOUR_YOUTUBE_DATA_API_KEY_HERE') {
+    throw new Error('YouTube API 키가 설정되지 않았습니다. YT_API_KEY를 채워주세요.');
+  }
 
-    if (!SPOTIFY_TOKEN || SPOTIFY_TOKEN.startsWith("여기에_")) {
-      spotifyTracksEl.innerHTML = `
-        <div class="empty">
-          Spotify 토큰이 설정되지 않았습니다.<br>
-          favorite_bands.html의 SPOTIFY_TOKEN 값을 실제 액세스 토큰으로 교체해주세요.
-        </div>`;
+  const q = encodeURIComponent(query);
+  const url =
+    `https://www.googleapis.com/youtube/v3/search` +
+    `?part=snippet&type=playlist&maxResults=${maxResults}&q=${q}&key=${YT_API_KEY}`;
+
+  const res = await fetch(url);
+  if (!res.ok) {
+    const text = await res.text().catch(() => '');
+    throw new Error(`YouTube API 오류: ${res.status} ${res.statusText} ${text}`.trim());
+  }
+  const data = await res.json();
+
+  return (data.items || [])
+    .map(item => ({
+      playlistId: item?.id?.playlistId,
+      title: item?.snippet?.title || 'Untitled',
+      channelTitle: item?.snippet?.channelTitle || '',
+      thumbnail:
+        item?.snippet?.thumbnails?.medium?.url ||
+        item?.snippet?.thumbnails?.default?.url ||
+        ''
+    }))
+    .filter(x => x.playlistId);
+}
+
+async function loadYouTubePlaylists(bandName) {
+  youtubeSection.style.display = 'block';
+  youtubePlaylistsEl.innerHTML = '<div class="loading">YouTube 플레이리스트를 불러오는 중...</div>';
+
+  // 검색 키워드 튜닝: playlist / greatest hits 등을 섞어 정확도를 약간 올림
+  const query = `${bandName} playlist`;
+
+  try {
+    const items = await searchYouTubePlaylists(query, YT_MAX_RESULTS);
+
+    if (!items.length) {
+      youtubePlaylistsEl.innerHTML =
+        '<div class="empty">추천할 플레이리스트를 찾지 못했습니다. 다른 밴드를 선택해보세요.</div>';
       return;
     }
 
-    try {
-      // 1) 아티스트 검색
-      const searchRes = await fetch(
-        `https://api.spotify.com/v1/search?q=${encodeURIComponent(bandName)}&type=artist&limit=1`,
-        { headers: { Authorization: "Bearer " + SPOTIFY_TOKEN } }
-      );
-      const searchData = await searchRes.json();
-      const artists = (searchData.artists && searchData.artists.items) || [];
-      if (!artists.length) {
-        spotifyTracksEl.innerHTML = `<div class="empty">"${bandName}" 아티스트를 찾지 못했습니다.</div>`;
-        return;
-      }
-      const artist = artists[0];
+    youtubePlaylistsEl.innerHTML = items.map(p => `
+      <div class="yt-card">
+        <div class="yt-meta">
+          ${p.thumbnail ? `<img class="yt-thumb" src="${p.thumbnail}" alt="">` : ''}
+          <div class="yt-text">
+            <div class="yt-title">${escapeHtml(p.title)}</div>
+            <div class="yt-channel">${escapeHtml(p.channelTitle)}</div>
+          </div>
+        </div>
+        <div class="yt-player">
+          <iframe
+            src="https://www.youtube.com/embed/videoseries?list=${encodeURIComponent(p.playlistId)}"
+            title="${escapeHtml(p.title)}"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+    `).join('');
 
-      // 2) top tracks 가져오기
-      const topRes = await fetch(
-        `https://api.spotify.com/v1/artists/${artist.id}/top-tracks?market=US`,
-        { headers: { Authorization: "Bearer " + SPOTIFY_TOKEN } }
-      );
-      const topData = await topRes.json();
-      const tracks = topData.tracks || [];
-
-      if (!tracks.length) {
-        spotifyTracksEl.innerHTML = `<div class="empty">Top tracks 데이터가 없습니다.</div>`;
-        return;
-      }
-
-      spotifyTracksEl.innerHTML = '';
-      tracks.slice(0, 5).forEach(t => {
-        const row = document.createElement('div');
-        row.className = 'spotify-track';
-
-        const left = document.createElement('div');
-        left.innerHTML = `
-          <div class="spotify-track-title">${t.name}</div>
-          <div class="spotify-track-meta">${artist.name} · ${t.album && t.album.name ? t.album.name : ''}</div>
-        `;
-
-        const right = document.createElement('div');
-        if (t.preview_url) {
-          const audio = document.createElement('audio');
-          audio.controls = true;
-          audio.src = t.preview_url;
-          right.appendChild(audio);
-        }
-        const link = document.createElement('a');
-        link.href = t.external_urls && t.external_urls.spotify ? t.external_urls.spotify : '#';
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
-        link.textContent = "Spotify에서 열기";
-        right.appendChild(link);
-
-        row.appendChild(left);
-        row.appendChild(right);
-        spotifyTracksEl.appendChild(row);
-      });
-
-    } catch (err) {
-      console.error(err);
-      spotifyTracksEl.innerHTML = `
-        <div class="empty">
-          API 호출에 실패했습니다.<br>
-          토큰 혹은 네트워크 상태를 확인해주세요.
-        </div>`;
-    }
+  } catch (err) {
+    console.error(err);
+    youtubePlaylistsEl.innerHTML = `
+      <div class="error">
+        YouTube 플레이리스트를 불러오지 못했습니다.<br>
+        <small>${escapeHtml(String(err.message || err))}</small>
+      </div>`;
   }
+}
+
+// XSS 방지용 간단 이스케이프
+function escapeHtml(str) {
+  return String(str)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
+
 
   // 초기 렌더
   renderFavoriteList();
