@@ -71,7 +71,7 @@
   <a href="credits.html">Image Credits</a>
   </footer>
 
-    <script src="commons_autofill.js"></script>
+  <script src="commons_autofill.js"></script>
 <script>
     const FAVORITES_KEY = 'rocklegends_favorites_v1';
 
@@ -114,11 +114,11 @@
   "1960": [
     {
       name:"Beatles", country:"UK", genre:"Classic Rock",
-      note:"British Invasion (1960s)", img:"images/beatles.jpg"
+      note:"British Invasion (1960s)", img:""
     },
     {
       name:"Rolling Stones", country:"UK", genre:"Classic Rock",
-      note:"Started 1962", img:"images/rollingstones.jpg"
+      note:"Started 1962", img:""
     },
     {
       name:"The Who", country:"UK", genre:"Classic Rock",
@@ -146,7 +146,7 @@
     },
     {
       name:"The Beach Boys", country:"US", genre:"Pop Rock",
-      note:"Pet Sounds (1966)", img:"images/beachboys.jpg"
+      note:"Pet Sounds (1966)", img:""
     },
     {
       name:"The Spiders", country:"JP", genre:"J-Rock",
@@ -156,15 +156,15 @@
   "1970": [
     {
       name:"Led Zeppelin", country:"UK", genre:"Hard Rock",
-      note:"Led Zeppelin IV (1971)", img:"images/ledzeppelin.jpg"
+      note:"Led Zeppelin IV (1971)", img:""
     },
     {
       name:"Pink Floyd", country:"UK", genre:"Progressive Rock",
-      note:"The Wall (1979)", img:"images/pinkfloyd.jpg"
+      note:"The Wall (1979)", img:""
     },
     {
       name:"KISS", country:"US", genre:"Hard Rock",
-      note:"Destroyer (1976)", img:"images/kiss.jpg"
+      note:"Destroyer (1976)", img:""
     },
     {
       name:"Queen", country:"UK", genre:"Classic Rock",
@@ -198,15 +198,15 @@
   "1980": [
     {
       name:"X Japan", country:"JP", genre:"Metal",
-      note:"Formation 1982", img:"images/xjapan.jpg"
+      note:"Formation 1982", img:""
     },
     {
       name:"U2", country:"Ireland", genre:"Classic Rock",
-      note:"The Joshua Tree (1987)", img:"images/u2.jpg"
+      note:"The Joshua Tree (1987)", img:""
     },
     {
       name:"Metallica", country:"US", genre:"Metal",
-      note:"Master of Puppets (1986)", img:"images/metallica.jpg"
+      note:"Master of Puppets (1986)", img:""
     },
     {
       name:"Iron Maiden", country:"UK", genre:"Metal",
@@ -240,15 +240,15 @@
   "1990": [
     {
       name:"Nirvana", country:"US", genre:"Grunge",
-      note:"Nevermind (1991)", img:"images/nirvana.jpg"
+      note:"Nevermind (1991)", img:""
     },
     {
       name:"Oasis", country:"UK", genre:"Britpop",
-      note:"Morning Glory (1995)", img:"images/oasis.jpg"
+      note:"Morning Glory (1995)", img:""
     },
     {
       name:"L'Arc~en~Ciel", country:"JP", genre:"J-Rock",
-      note:"Heavenly (1995)", img:"images/larcenciel.jpg"
+      note:"Heavenly (1995)", img:""
     },
     {
       name:"Pearl Jam", country:"US", genre:"Grunge",
@@ -282,15 +282,15 @@
   "2000": [
     {
       name:"Linkin Park", country:"US", genre:"Alternative Rock",
-      note:"Hybrid Theory (2000)", img:"images/linkinpark.jpg"
+      note:"Hybrid Theory (2000)", img:""
     },
     {
       name:"Coldplay", country:"UK", genre:"Pop Rock",
-      note:"Parachutes (2000)", img:"images/coldplay.jpg"
+      note:"Parachutes (2000)", img:""
     },
     {
       name:"Asian Kung-Fu Generation", country:"JP", genre:"J-Rock",
-      note:"Debut (2003)", img:"images/akfg.jpg"
+      note:"Debut (2003)", img:""
     },
     {
       name:"The Strokes", country:"US", genre:"Alternative Rock",
@@ -306,7 +306,7 @@
     },
     {
       name:"Arctic Monkeys", country:"UK", genre:"Alternative Rock",
-      note:"Breakthrough (mid‑2000s)", img:"images/arcticmonkeys.jpg"
+      note:"Breakthrough (mid‑2000s)", img:""
     },
     {
       name:"The Killers", country:"US", genre:"Alternative Rock",
@@ -324,7 +324,7 @@
   "2010": [
     {
       name:"Imagine Dragons", country:"US", genre:"Pop Rock",
-      note:"Night Visions (2012)", img:"images/imaginedragons.jpg"
+      note:"Night Visions (2012)", img:""
     },
     {
       name:"Twenty One Pilots", country:"US", genre:"Alternative Rock",
@@ -366,15 +366,15 @@
   "2020": [
     {
       name:"Måneskin", country:"Ita", genre:"Hard Rock",
-      note:"Eurovision (2021)", img:"images/maneskin.jpg"
+      note:"Eurovision (2021)", img:""
     },
     {
       name:"Greta Van Fleet", country:"US", genre:"Classic Rock",
-      note:"The Battle at Garden's Gate (2021)", img:"images/gvf.jpg"
+      note:"The Battle at Garden's Gate (2021)", img:""
     },
     {
       name:"King Gnu", country:"JP", genre:"Alternative Rock",
-      note:"Ceremony (2020)", img:"images/kinggnu.jpg"
+      note:"Ceremony (2020)", img:""
     },
     {
       name:"Pinguini Tattici Nucleari", country:"Ita", genre:"Pop Rock",
@@ -406,10 +406,7 @@
     }
   ]
 };
-    // (추가) credits.html에서 재사용할 수 있도록 DATA를 로컬에 저장
-  try { localStorage.setItem('rocklegends_data_v1', JSON.stringify(DATA)); } catch (e) {}
-
-const years = ["1960","1970","1980","1990","2000","2010","2020"];
+  const years = ["1960","1970","1980","1990","2000","2010","2020"];
   const ERA_GENRE = {
   "1960": "1960s · British Invasion & Classic Rock",
   "1970": "1970s · Hard Rock & Progressive Rock",
@@ -796,7 +793,7 @@ expand.innerHTML = `
     <div class="bio">
       ${BAND_BIOS[b.name] || '약력이 아직 없습니다. BAND_BIOS에 "밴드명": "소개글"로 추가하세요.'}
     </div>
-    ${b.img ? `<img class="band-cover" src="${b.img}" alt="${b.name} cover" />` : ``}
+    <img class="band-cover" data-band="${b.name}" alt="${b.name} cover" loading="lazy" ${b.img ? `src="${b.img}"` : ``} style="${b.img ? `` : `display:none;`}" />
   </div>
 `;
 
@@ -830,36 +827,36 @@ expand.innerHTML = `
       card.appendChild(expand);
       bandsEl.appendChild(card);
 
-      // (추가) Wikimedia Commons에서 빈 img 자동 채우기 (GitHub Pages에서도 동작)
-      if (!b.img && window.RockLegendsCommons) {
-        RockLegendsCommons.ensureBandImageAndMeta(b.name, year)
-          .then(meta => {
-            if (!meta || !meta.imageUrl) return;
+      // --- Commons 자동 이미지 보강 (로컬 images/*.jpg가 404일 경우 포함) ---
+      const coverEl = expand.querySelector('.band-cover');
+      const fillFromCommons = async () => {
+        try {
+          if (!window.RockLegendsCommons) return;
+          const meta = await window.RockLegendsCommons.ensureBandImageAndMeta(b.name, year);
+          if (meta && meta.imageUrl) {
             b.img = meta.imageUrl;
-            body.style.setProperty('--band-bg', `url("${meta.imageUrl}")`);
-
-            // 확장 영역에 이미지가 없으면 생성/삽입
-            const layout = expand.querySelector('.expand-layout');
-            if (layout) {
-              let imgEl = layout.querySelector('img.band-cover');
-              if (!imgEl) {
-                imgEl = document.createElement('img');
-                imgEl.className = 'band-cover';
-                imgEl.alt = `${b.name} cover`;
-                const bio = layout.querySelector('.bio');
-                if (bio) layout.insertBefore(imgEl, bio);
-                else layout.appendChild(imgEl);
-              }
-              imgEl.src = meta.imageUrl;
-              imgEl.style.display = '';
+            if (coverEl) {
+              coverEl.src = meta.imageUrl;
+              coverEl.style.display = '';
             }
+            body.style.setProperty('--band-bg', `url("${meta.imageUrl}")`);
+            window.RockLegendsCommons.patchFavoriteImgIfNeeded(b.name, year, meta.imageUrl);
+          }
+        } catch (e) {
+          console.warn('Commons 이미지 로드 실패:', b.name, e);
+        }
+      };
 
-            // 즐겨찾기 로컬스토리지에 저장된 img가 비어있으면 함께 업데이트
-            RockLegendsCommons.patchFavoriteImgIfNeeded(b.name, year, meta.imageUrl);
-          })
-          .catch(() => {});
+      if (coverEl) {
+        coverEl.addEventListener('error', () => {
+          // 기존 img가 깨졌으면(404 등) Commons로 교체
+          coverEl.removeAttribute('src');
+          coverEl.style.display = 'none';
+          b.img = '';
+          fillFromCommons();
+        }, { once: true });
       }
-
+      card._fillFromCommons = fillFromCommons;
 
       // 카드 클릭 시: 확대 + 맨 위로
       card.addEventListener('click', () => {
@@ -871,6 +868,7 @@ expand.innerHTML = `
           const header = document.querySelector('.header');
           const topY = (header ? header.offsetTop + header.offsetHeight + 8 : 0);
           window.scrollTo({ top: topY, behavior: 'smooth' });
+          if (!b.img && card._fillFromCommons) card._fillFromCommons();
         }
       });
     });

@@ -11,29 +11,27 @@
     <div class="logo">ROCK LEGENDS</div>
     <nav class="nav">
       <a href="index.html">Home</a>
-      <a href="favorite_bands.html">Favorite Bands</a>
     </nav>
   </div>
 
   <main class="container">
     <section class="section">
-      <h1 style="margin:0 0 10px;">이미지 저작권 / 라이선스 표기</h1>
-      <p class="muted" style="margin:0 0 14px;">
-        이 페이지는 Wikimedia Commons에서 자동으로 가져온 이미지의 작성자/라이선스 정보를 표시합니다.
-        (첫 로딩 시 몇 초 걸릴 수 있어요)
+      <h1>Image Credits</h1>
+      <p class="muted">
+        이 페이지는 Wikimedia Commons의 자유 라이선스 이미지를 사용하며,
+        각 밴드별로 <strong>Commons 파일 링크 / 작성자(credit) / 라이선스</strong>를 표기합니다.
       </p>
 
-      <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin: 0 0 14px;">
-        <button id="refreshBtn" class="btn">다시 불러오기</button>
-        <button id="clearCacheBtn" class="btn" style="background: rgba(255,255,255,0.06);">캐시 삭제</button>
-        <span id="progress" class="muted"></span>
+      <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+        <button id="clearCacheBtn" class="btn">캐시 삭제 후 다시 불러오기</button>
+        <span id="creditsProgress" class="muted">준비 중…</span>
       </div>
 
-      <div id="creditsRoot"></div>
+      <div id="creditsRoot" style="margin-top:16px;"></div>
 
-      <p class="muted" style="margin-top: 18px;">
-        모든 이미지는 각 파일 페이지에 명시된 자유 라이선스(CC BY, CC BY-SA, Public Domain 등)를 따릅니다.
-        특정 단체/아티스트의 보증(endorsement)을 의미하지 않습니다.
+      <p class="muted" style="margin-top:18px;">
+        모든 표기는 Commons 메타데이터(extmetadata)를 기반으로 자동 생성됩니다.
+        사이트의 내용은 해당 저작물의 보증/승인을 의미하지 않습니다.
       </p>
     </section>
   </main>
@@ -44,84 +42,79 @@
 
   <script src="commons_autofill.js"></script>
   <script>
-    const FALLBACK_DATA = {
-      "1960": ["Beatles","Rolling Stones","The Who","The Kinks","The Doors","The Jimi Hendrix Experience","Creedence Clearwater Revival","Jefferson Airplane","The Beach Boys","The Spiders"],
-      "1970": ["Led Zeppelin","Pink Floyd","KISS","Queen","Black Sabbath","Deep Purple","Eagles","Van Halen","PFM","Southern All Stars"],
-      "1980": ["X Japan","U2","Metallica","Iron Maiden","Def Leppard","Guns N' Roses","Bon Jovi","The Cure","BOØWY","Litfiba"],
-      "1990": ["Nirvana","Oasis","L'Arc~en~Ciel","Pearl Jam","Green Day","Red Hot Chili Peppers","Blur","Radiohead","GLAY","Afterhours"],
-      "2000": ["Linkin Park","Coldplay","Asian Kung-Fu Generation","The Strokes","The White Stripes","Muse","Arctic Monkeys","The Killers","ONE OK ROCK","Lacuna Coil"],
-      "2010": ["Imagine Dragons","Twenty One Pilots","Royal Blood","The 1975","Bring Me The Horizon","Florence + The Machine","BABYMETAL","MAN WITH A MISSION","BAND-MAID","Thegiornalisti"],
-      "2020": ["Måneskin","Greta Van Fleet","King Gnu","Pinguini Tattici Nucleari","Fast Animals and Slow Kids","Turnstile","Wet Leg","Sleep Token","The Last Dinner Party","Official HIGE DANdism"]
-    };
+    const DECADES = {
+  "1960": ["Beatles", "Rolling Stones", "The Who", "The Kinks", "The Doors", "The Jimi Hendrix Experience", "Creedence Clearwater Revival", "Jefferson Airplane", "The Beach Boys", "The Spiders"],
+  "1970": ["Led Zeppelin", "Pink Floyd", "KISS", "Queen", "Black Sabbath", "Deep Purple", "Eagles", "Van Halen", "PFM", "Southern All Stars"],
+  "1980": ["X Japan", "U2", "Metallica", "Iron Maiden", "Def Leppard", "Guns N' Roses", "Bon Jovi", "The Cure", "BOØWY", "Litfiba"],
+  "1990": ["Nirvana", "Oasis", "L'Arc~en~Ciel", "Pearl Jam", "Green Day", "Red Hot Chili Peppers", "Blur", "Radiohead", "GLAY", "Afterhours"],
+  "2000": ["Linkin Park", "Coldplay", "Asian Kung-Fu Generation", "The Strokes", "The White Stripes", "Muse", "Arctic Monkeys", "The Killers", "ONE OK ROCK", "Lacuna Coil"],
+  "2010": ["Imagine Dragons", "Twenty One Pilots", "Royal Blood", "The 1975", "Bring Me The Horizon", "Florence + The Machine", "BABYMETAL", "MAN WITH A MISSION", "BAND-MAID", "Thegiornalisti"],
+  "2020": ["Måneskin", "Greta Van Fleet", "King Gnu", "Pinguini Tattici Nucleari", "Fast Animals and Slow Kids", "Turnstile", "Wet Leg", "Sleep Token", "The Last Dinner Party", "Official HIGE DANdism"]
+};
 
-    const progressEl = document.getElementById('progress');
-    const creditsRoot = document.getElementById('creditsRoot');
-    const refreshBtn = document.getElementById('refreshBtn');
-    const clearCacheBtn = document.getElementById('clearCacheBtn');
+    function el(tag, attrs={}, children=[]) {
+      const node = document.createElement(tag);
+      for (const [k,v] of Object.entries(attrs||{})) {
+        if (k === 'class') node.className = v;
+        else if (k === 'text') node.textContent = v;
+        else node.setAttribute(k, v);
+      }
+      for (const ch of children) node.appendChild(ch);
+      return node;
+    }
 
-    function getDecadeToBands() {
-      try {
-        const raw = localStorage.getItem('rocklegends_data_v1');
-        if (raw) {
-          const data = JSON.parse(raw);
-          const out = {};
-          for (const [dec, list] of Object.entries(data)) {
-            out[dec] = (list || []).map(x => x.name).filter(Boolean);
+    async function buildCredits() {
+      const root = document.getElementById('creditsRoot');
+      const progress = document.getElementById('creditsProgress');
+
+      if (!window.RockLegendsCommons) {
+        progress.textContent = "commons_autofill.js 로드 실패(경로 확인 필요)";
+        return;
+      }
+
+      root.innerHTML = "";
+      const decadeKeys = Object.keys(DECADES).sort();
+
+      // 총 개수 계산
+      const total = decadeKeys.reduce((s,k)=> s + (DECADES[k]||[]).length, 0);
+      let done = 0;
+      progress.textContent = `불러오는 중… (0/${total})`;
+
+      for (const decade of decadeKeys) {
+        const title = el('h2', { text: `${decade}s` });
+        title.style.marginTop = "18px";
+
+        const ul = el('ul', { class: 'image-credits' });
+        root.appendChild(title);
+        root.appendChild(ul);
+
+        const names = DECADES[decade] || [];
+
+        await window.RockLegendsCommons.mapLimit(
+          names,
+          3,
+          async (name) => {
+            const meta = await window.RockLegendsCommons.ensureBandImageAndMeta(name, decade);
+            // ensureBandImageAndMeta는 missing도 반환하므로 buildCreditLi에 그대로 전달 가능
+            const li = window.RockLegendsCommons.buildCreditLi(meta);
+            ul.appendChild(li);
+            done += 1;
+            progress.textContent = `불러오는 중… (${done}/${total})`;
           }
-          // 최소한 fallback 키는 유지
-          return Object.keys(out).length ? out : FALLBACK_DATA;
-        }
-      } catch (e) {}
-      return FALLBACK_DATA;
-    }
-
-    function clearUI() {
-      creditsRoot.innerHTML = '';
-      progressEl.textContent = '';
-    }
-
-    async function renderCredits() {
-      clearUI();
-      const decadeToBands = getDecadeToBands();
-      const all = [];
-      for (const [dec, bands] of Object.entries(decadeToBands)) {
-        for (const name of bands) all.push({ name, year: dec });
+        );
       }
 
-      // 섹션 미리 생성
-      const sections = {};
-      for (const dec of Object.keys(decadeToBands)) {
-        const sec = document.createElement('section');
-        sec.className = 'section';
-        sec.style.marginTop = '18px';
-        sec.innerHTML = `<h2 style="margin:0 0 8px;">${dec}년대</h2><ul class="image-credits"></ul>`;
-        creditsRoot.appendChild(sec);
-        sections[dec] = sec.querySelector('ul.image-credits');
-      }
-
-      // 병렬로 메타 가져오기(과도한 요청 방지 위해 동시 4개)
-      const results = await RockLegendsCommons.mapLimit(all, 4, async (it) => {
-        const meta = await RockLegendsCommons.ensureBandImageAndMeta(it.name, it.year);
-        return meta;
-      }, (done, total) => {
-        progressEl.textContent = `불러오는 중... ${done}/${total}`;
-      });
-
-      for (const meta of results) {
-        const ul = sections[String(meta?.year || '')] || sections["1960"];
-        ul.appendChild(RockLegendsCommons.buildCreditLi(meta));
-      }
-
-      progressEl.textContent = '완료!';
+      progress.textContent = `완료! (${done}/${total})`;
     }
 
-    refreshBtn.addEventListener('click', renderCredits);
-    clearCacheBtn.addEventListener('click', () => {
-      RockLegendsCommons.clearCache();
-      alert('캐시를 삭제했습니다. (다시 불러오기를 누르면 Commons에서 재조회합니다)');
+    document.getElementById('clearCacheBtn').addEventListener('click', () => {
+      try {
+        window.RockLegendsCommons.clearCache();
+      } catch {}
+      location.reload();
     });
 
-    renderCredits();
+    window.addEventListener('DOMContentLoaded', buildCredits);
   </script>
 </body>
 </html>
