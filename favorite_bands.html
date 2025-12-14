@@ -258,53 +258,92 @@ const BAND_BIOS = {
   }
 
 // ------------------ YouTube 플레이리스트 추천 ------------------
-async function searchYouTubePlaylists(query, maxResults = YT_MAX_RESULTS) {
-  if (!YT_API_KEY || YT_API_KEY === 'YOUR_YOUTUBE_DATA_API_KEY_HERE') {
-    throw new Error('YouTube API 키가 설정되지 않았습니다. YT_API_KEY를 채워주세요.');
+function scorePlaylist(p, bandName) {
+  const b = (bandName || '').toLowerCase();
+  const title = (p.title || '').toLowerCase();
+  const channel = (p.channelTitle || '').toLowerCase();
+
+  let score = 0;
+
+  // 공식/공인 키워드 가산점
+  const boosts = [
+    { kw: 'official', pts: 6 },
+    { kw: 'vevo', pts: 5 },
+    { kw: 'topic', pts: 2 },         // "Artist - Topic" 채널 힌트(공식에 가까운 경우가 있어 가산)
+    { kw: 'complete', pts: 2 },
+    { kw: 'all songs', pts: 2 },
+    { kw: 'greatest hits', pts: 2 },
+    { kw: 'best of', pts: 2 }
+  ];
+
+  for (const { kw, pts } of boosts) {
+    if (title.includes(kw)) score += pts;
+    if (channel.includes(kw)) score += Math.floor(pts / 2);
   }
 
-  const q = encodeURIComponent(query);
-  const url =
-    `https://www.googleapis.com/youtube/v3/search` +
-    `?part=snippet&type=playlist&maxResults=${maxResults}&q=${q}&key=${YT_API_KEY}`;
+  // 밴드명이 채널명/제목에 명확히 포함되면 가산점
+  if (b && title.includes(b)) score += 2;
+  if (b && channel.includes(b)) score += 3;
 
-  const res = await fetch(url);
-  if (!res.ok) {
-    const text = await res.text().catch(() => '');
-    throw new Error(`YouTube API 오류: ${res.status} ${res.statusText} ${text}`.trim());
+  // 커버/트리뷰트/라이브 전용 등은 약간 감점(원하면 조정 가능)
+  const penalties = [
+    { kw: 'cover', pts: 2 },
+    { kw: 'tribute', pts: 2 },
+    { kw: 'karaoke', pts: 3 }
+  ];
+  for (const { kw, pts } of penalties) {
+    if (title.includes(kw) || channel.includes(kw)) score -= pts;
   }
-  const data = await res.json();
 
-  return (data.items || [])
-    .map(item => ({
-      playlistId: item?.id?.playlistId,
-      title: item?.snippet?.title || 'Untitled',
-      channelTitle: item?.snippet?.channelTitle || '',
-      thumbnail:
-        item?.snippet?.thumbnails?.medium?.url ||
-        item?.snippet?.thumbnails?.default?.url ||
-        ''
-    }))
-    .filter(x => x.playlistId);
+  return score;
+}
+
+function rankAndPickPlaylists(allItems, bandName, limit = YT_MAX_RESULTS) {
+  // 중복 playlistId 제거
+  const uniq = new Map();
+  for (const it of allItems) {
+    if (it?.playlistId && !uniq.has(it.playlistId)) uniq.set(it.playlistId, it);
+  }
+
+  return Array.from(uniq.values())
+    .map(p => ({ ...p, _score: scorePlaylist(p, bandName) }))
+    .sort((a, b) => b._score - a._score)
+    .slice(0, limit);
 }
 
 async function loadYouTubePlaylists(bandName) {
   youtubeSection.style.display = 'block';
   youtubePlaylistsEl.innerHTML = '<div class="loading">YouTube 플레이리스트를 불러오는 중...</div>';
 
-  // 검색 키워드 튜닝: playlist / greatest hits 등을 섞어 정확도를 약간 올림
-  const query = `${bandName} playlist`;
+  // “공식성 높은 것 먼저” → 없으면 점점 일반 검색으로
+  const queries = [
+    `${bandName} official playlist`,
+    `${bandName} VEVO playlist`,
+    `${bandName} greatest hits playlist`,
+    `${bandName} playlist`,
+  ];
 
   try {
-    const items = await searchYouTubePlaylists(query, YT_MAX_RESULTS);
+    let collected = [];
 
-    if (!items.length) {
+    // 여러 쿼리에서 결과를 모아서 랭킹
+    for (const q of queries) {
+      const items = await searchYouTubePlaylists(q, 6); // 각 쿼리당 조금 넉넉히 가져옴
+      collected = collected.concat(items);
+
+      // 충분히 모이면 더 안 가져와도 됨
+      if (collected.length >= 12) break;
+    }
+
+    const picked = rankAndPickPlaylists(collected, bandName, YT_MAX_RESULTS);
+
+    if (!picked.length) {
       youtubePlaylistsEl.innerHTML =
         '<div class="empty">추천할 플레이리스트를 찾지 못했습니다. 다른 밴드를 선택해보세요.</div>';
       return;
     }
 
-    youtubePlaylistsEl.innerHTML = items.map(p => `
+    youtubePlaylistsEl.innerHTML = picked.map(p => `
       <div class="yt-card">
         <div class="yt-meta">
           ${p.thumbnail ? `<img class="yt-thumb" src="${p.thumbnail}" alt="">` : ''}
@@ -324,7 +363,6 @@ async function loadYouTubePlaylists(bandName) {
         </div>
       </div>
     `).join('');
-
   } catch (err) {
     console.error(err);
     youtubePlaylistsEl.innerHTML = `
@@ -334,6 +372,7 @@ async function loadYouTubePlaylists(bandName) {
       </div>`;
   }
 }
+
 
 // XSS 방지용 간단 이스케이프
 function escapeHtml(str) {
